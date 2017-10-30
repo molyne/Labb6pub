@@ -23,6 +23,23 @@ namespace Labb6pub
         public MainWindow()
         {
             InitializeComponent();
+
+
+            Task.Run(() => {
+
+                Dispatcher.Invoke(() => { GuestListBox.Items.Insert(0, new Bouncer());
+
+
+                });
+
+            });
+           
+            
+
         }
+
+        
+
+
     }
 }
