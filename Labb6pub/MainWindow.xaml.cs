@@ -22,12 +22,9 @@ namespace Labb6pub
     public partial class MainWindow : Window
 
     {
-
-
         public MainWindow()
         {
             InitializeComponent();
-
 
         }
 
@@ -40,12 +37,12 @@ namespace Labb6pub
             });
         }
 
-        private void AddToGuestListBox(string name)
+        private void AddToGuestListBox(string patronInformation)
         {
 
             Dispatcher.Invoke(() =>
                 {
-                    GuestListBox.Items.Insert(0, name+ " enters and goes to the bar.");
+                    GuestListBox.Items.Insert(0, patronInformation);
 
                 });
 

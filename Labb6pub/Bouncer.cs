@@ -10,13 +10,15 @@ namespace Labb6pub
 
     class Bouncer
     {
-       
+
+        private Action<string> Callback;
 
         List<string> GuestList;
 
         public Bouncer(Action<string> CallBack)
         {
-            
+            this.Callback = CallBack;
+
             GuestList = new List<string>();
             {
 
@@ -49,7 +51,9 @@ namespace Labb6pub
                 int randomNumber = r.Next(0, 15);
 
                 Patron p = new Patron(GuestList[randomNumber]);
-             
+
+                Callback(p.Name);
+
             });
             }
 

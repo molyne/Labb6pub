@@ -14,6 +14,8 @@ namespace Labb6pub
         {
             this.Name = name;
         }
+
+
     }
 
 
