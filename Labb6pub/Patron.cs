@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 namespace Labb6pub
 {
     class Patron
-    {   
+    {
+        
+    
+
         public string Name{ get; set; }
 
         public Patron(string name)
@@ -17,6 +20,7 @@ namespace Labb6pub
 
         public string PatronEnters()
         {
+            
             return Name + " enters and goes to the bar.";
         }
 

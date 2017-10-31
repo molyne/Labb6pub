@@ -14,6 +14,7 @@ namespace Labb6pub
     class Bouncer
     {
         private Action<string> Callback;
+        public event Func<string> PatronArrived;
 
         List<string> GuestList;
 
@@ -47,19 +48,16 @@ namespace Labb6pub
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
         public void Work()
         {
-
-           
-
-
             Task.Run(() =>
                 {
-                     Stopwatch s = new Stopwatch();
+                   
+                    Stopwatch s = new Stopwatch();
                      s.Start();           
                     Random r = new Random();
    
                     while (s.Elapsed<TimeSpan.FromSeconds(120))//tiden har tagit slut 2 min. 120 sekunder.
-                    {
-                        //gör så att den inte kan lägga till 
+                    {   
+
                         int randomTime = r.Next(3000, 10000);
                         Thread.Sleep(randomTime);
                         
@@ -67,6 +65,10 @@ namespace Labb6pub
                         int randomNumber = r.Next(0, 15);
 
                         Patron p = new Patron(GuestList[randomNumber]);
+
+                        //kö i main
+
+                        PatronArrived?.Invoke();
 
                         Callback(p.PatronEnters());
                     }

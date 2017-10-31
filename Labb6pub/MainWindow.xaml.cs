@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,21 +29,28 @@ namespace Labb6pub
         {
             InitializeComponent();
 
+            
         }
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
 
+                Bartender bar = new Bartender();
+                Bouncer b = new Bouncer(AddToGuestListBox);
+
+                b.PatronArrived += bar.GetGlass;
+
+            //prenumenera här på events
             Task.Run(() => 
             {
-                Bartender bar = new Bartender();
                 bar.WaitsForPatron(AddToBartenderListBox);
+                
+                
             });
 
            
                 Task.Run(() =>
                 {
-                    Bouncer b = new Bouncer(AddToGuestListBox);
                     b.Work();
                 });
             
