@@ -15,31 +15,69 @@ using System.Windows.Shapes;
 
 namespace Labb6pub
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
+
     {
+
+
         public MainWindow()
         {
             InitializeComponent();
 
+            //Patron p = new Patron();
 
-            Task.Run(() => {
+            //Task.Run(() =>
+            //{
 
-                Dispatcher.Invoke(() => { GuestListBox.Items.Insert(0, new Bouncer());
+            //    Dispatcher.Invoke(() =>
+            //    {
+            //        GuestListBox.Items.Insert(0, p.PatronInformation);
+
+
+            //    });
+
+            //});
+
+
+
+        }
+
+        private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
+
+        {
+            Patron p = new Patron();
+
+            Task.Run(() =>
+            {
+
+                Dispatcher.Invoke(() =>
+                {
+                    GuestListBox.Items.Insert(0, p.PatronInformation);
 
 
                 });
 
             });
-           
-            
-
         }
-
-        
-
-
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

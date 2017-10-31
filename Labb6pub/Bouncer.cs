@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace Labb6pub
 {
-   
+
     class Bouncer
     {
+        public string Name { get; set; }
 
-      
-               
-
-    public string Name { get; set; }
-
-        
         public Bouncer()
-            {
-           
+        {
+            
+
             var GuestList = new List<string>();
             {
 
@@ -40,16 +37,21 @@ namespace Labb6pub
                 GuestList.Add("Tobias");
 
             };
+            {
 
-            Random r = new Random();
-            int randomNumber = r.Next(0, 15);
+                Random r = new Random();
+                int randomNumber = r.Next(0, 15);
 
-             this.Name = GuestList[randomNumber];
+                this.Name = GuestList[randomNumber];
+
 
             }
 
 
 
+        }
 
+
+
+        }
     }
-}
