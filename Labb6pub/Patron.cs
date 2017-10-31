@@ -15,6 +15,10 @@ namespace Labb6pub
             this.Name = name;
         }
 
+        public string PatronEnters()
+        {
+            return Name + " enters and goes to the bar.";
+        }
 
     }
 

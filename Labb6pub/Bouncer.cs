@@ -52,7 +52,7 @@ namespace Labb6pub
 
                 Patron p = new Patron(GuestList[randomNumber]);
 
-                Callback(p.Name);
+                Callback(p.PatronEnters());
 
             });
             }
