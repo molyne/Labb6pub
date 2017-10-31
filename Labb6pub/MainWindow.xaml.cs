@@ -22,6 +22,8 @@ namespace Labb6pub
     public partial class MainWindow : Window
 
     {
+        bool IsBarOpen = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,11 +32,27 @@ namespace Labb6pub
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
+
+            Task.Run(() => 
+            {
+                Bartender bar = new Bartender();
+                bar.WaitsForPatron(AddToBartenderListBox);
+            });
+
+           
+                Task.Run(() =>
+                {
+                    Bouncer b = new Bouncer(AddToGuestListBox);
+                    b.Work();
+                });
+            
+
+           
             Task.Run(() =>
             {
-                Bouncer b = new Bouncer(AddToGuestListBox);
-                b.Work();
+                //gör en task åt waitress.
             });
+
         }
 
         private void AddToGuestListBox(string patronInformation)
@@ -47,6 +65,16 @@ namespace Labb6pub
                 });
 
         }
+        private void AddToBartenderListBox(string bartenderInformation)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                BartenderListbox.Items.Insert(0, bartenderInformation);
+
+            });
+
+        }
+
     }
 }
 
