@@ -28,40 +28,27 @@ namespace Labb6pub
         {
             InitializeComponent();
 
-            //Patron p = new Patron();
-
-            //Task.Run(() =>
-            //{
-
-            //    Dispatcher.Invoke(() =>
-            //    {
-            //        GuestListBox.Items.Insert(0, p.PatronInformation);
-
-
-            //    });
-
-            //});
-
-
 
         }
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
-
         {
-            Patron p = new Patron();
-
             Task.Run(() =>
             {
+                Bouncer b = new Bouncer(AddToGuestListBox);
+                b.Work();
+            });
+        }
 
-                Dispatcher.Invoke(() =>
+        private void AddToGuestListBox(string name)
+        {
+
+            Dispatcher.Invoke(() =>
                 {
-                    GuestListBox.Items.Insert(0, p.PatronInformation);
-
+                    GuestListBox.Items.Insert(0, name+ " enters and goes to the bar.");
 
                 });
 
-            });
         }
     }
 }

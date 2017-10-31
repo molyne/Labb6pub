@@ -7,27 +7,18 @@ using System.Threading.Tasks;
 namespace Labb6pub
 {
     class Patron
-    {
-        
-        Bouncer b = new Bouncer();
+    {   
+        public string Name{ get; set; }
 
-        public string PatronInformation
+        public Patron(string name)
         {
-
-            get { return b.Name + " enters and goes to the bar"; }
-            set { b.Name = value; }
+            this.Name = name;
         }
     }
 
-    //public string PatronInformation {get; set;}
 
-    //Bouncer b = new Bouncer();
-
-    //public Patron()
-    //{
-    //    this.PatronInformation = b.Name + " goes to the bar";
-    //}
-
+   
+ 
 
 }
 

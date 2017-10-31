@@ -10,13 +10,14 @@ namespace Labb6pub
 
     class Bouncer
     {
-        public string Name { get; set; }
+       
 
-        public Bouncer()
+        List<string> GuestList;
+
+        public Bouncer(Action<string> CallBack)
         {
             
-
-            var GuestList = new List<string>();
+            GuestList = new List<string>();
             {
 
                 GuestList.Add("Kalle");
@@ -36,22 +37,21 @@ namespace Labb6pub
                 GuestList.Add("Elias");
                 GuestList.Add("Tobias");
 
-            };
-            {
+            };      
 
+        }
+  //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
+             public void Work()
+            {
+            Task.Run(() =>
+            {
                 Random r = new Random();
                 int randomNumber = r.Next(0, 15);
 
-                this.Name = GuestList[randomNumber];
-
-
+                Patron p = new Patron(GuestList[randomNumber]);
+             
+            });
             }
-
-
-
-        }
-
-
 
         }
     }
