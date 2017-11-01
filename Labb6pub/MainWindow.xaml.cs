@@ -25,6 +25,8 @@ namespace Labb6pub
 
     {
         Stack<Glass> stackGlasses;
+        public event Action<Action<string>> RemovedGlass;
+        Bartender bar = new Bartender();
 
         public MainWindow()
         {
@@ -67,6 +69,8 @@ namespace Labb6pub
         }
         private void RemoveGlass()
         {
+            
+
             if (stackGlasses.Count != 0)
             {
                 Glass g1 = stackGlasses.Pop(); // ta bort glas
@@ -74,7 +78,10 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
+                RemovedGlass?.Invoke(AddToBartenderListBox);
             });
+
+            
         }
 
 
@@ -92,11 +99,12 @@ namespace Labb6pub
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
 
-            Bartender bar = new Bartender();
+           
             Bouncer b = new Bouncer(AddToGuestListBox);
 
             b.PatronArrived += bar.GetGlass;
             bar.TookGlass += RemoveGlass;
+            RemovedGlass += bar.PourBeer;
 
 
             FillShelveWithGlasses();
@@ -105,10 +113,6 @@ namespace Labb6pub
             Task.Run(() =>
             {
                 bar.WaitsForPatron(AddToBartenderListBox);
-               
-
-
-
             });
 
 
