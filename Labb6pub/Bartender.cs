@@ -19,7 +19,7 @@ public void WaitsForPatron(Action<string> Callback)
         public void GetGlass(Action<string> Callback)
         {
 
-            Callback("Gets the glass from the shelve for ");
+            Callback("Gets the glass from the shelve");
             
         }
 

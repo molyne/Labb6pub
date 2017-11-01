@@ -34,6 +34,38 @@ namespace Labb6pub
 
         }
 
+        private void FillShelveWithGlasses()
+        {
+            Stack<Glass> stackGlasses = new Stack<Glass>();
+
+            Glass glass1 = new Glass();
+            Glass glass2 = new Glass();
+            Glass glass3 = new Glass();
+            Glass glass4 = new Glass();
+            Glass glass5 = new Glass();
+            Glass glass6 = new Glass();
+            Glass glass7 = new Glass();
+            Glass glass8 = new Glass();
+
+            stackGlasses.Push(glass1);
+            stackGlasses.Push(glass2);
+            stackGlasses.Push(glass3);
+            stackGlasses.Push(glass4);
+            stackGlasses.Push(glass5);
+            stackGlasses.Push(glass6);
+            stackGlasses.Push(glass7);
+            stackGlasses.Push(glass8);
+
+            Glass g1 = stackGlasses.Pop(); // ta bort glas
+
+            Dispatcher.Invoke(() =>
+            {
+                NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
+            });
+
+        }
+
+
         private void QueueToBar()
         {
             ConcurrentQueue<string> queue = new ConcurrentQueue<string>();
@@ -52,6 +84,9 @@ namespace Labb6pub
             Bouncer b = new Bouncer(AddToGuestListBox);
 
             b.PatronArrived += bar.GetGlass;
+
+
+            FillShelveWithGlasses();
 
             //prenumenera här på events
             Task.Run(() =>
