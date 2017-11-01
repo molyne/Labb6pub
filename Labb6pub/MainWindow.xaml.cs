@@ -24,6 +24,7 @@ namespace Labb6pub
     public partial class MainWindow : Window
 
     {
+        Stack<Glass> stackGlasses;
 
         public MainWindow()
         {
@@ -36,7 +37,7 @@ namespace Labb6pub
 
         private void FillShelveWithGlasses()
         {
-            Stack<Glass> stackGlasses = new Stack<Glass>();
+            stackGlasses = new Stack<Glass>();
 
             Glass glass1 = new Glass();
             Glass glass2 = new Glass();
@@ -56,13 +57,22 @@ namespace Labb6pub
             stackGlasses.Push(glass7);
             stackGlasses.Push(glass8);
 
-            Glass g1 = stackGlasses.Pop(); // ta bort glas
+
 
             Dispatcher.Invoke(() =>
             {
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
             });
 
+        }
+        private void RemoveGlass()
+        {
+            Glass g1 = stackGlasses.Pop(); // ta bort glas
+
+            Dispatcher.Invoke(() =>
+            {
+                NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
+            });
         }
 
 
@@ -84,6 +94,7 @@ namespace Labb6pub
             Bouncer b = new Bouncer(AddToGuestListBox);
 
             b.PatronArrived += bar.GetGlass;
+            bar.TookGlass += RemoveGlass;
 
 
             FillShelveWithGlasses();

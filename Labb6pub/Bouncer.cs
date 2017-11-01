@@ -77,7 +77,8 @@ namespace Labb6pub
                         
 
                         Callback(p.PatronEnters());
-                        Thread.Sleep(1000);
+                        Thread.Sleep(1000); //tid att gå till baren
+                        Thread.Sleep(3000); //tid att ta glaset
                         PatronArrived?.Invoke(CallBack);
 
                     }
