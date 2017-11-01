@@ -67,8 +67,10 @@ namespace Labb6pub
         }
         private void RemoveGlass()
         {
-            Glass g1 = stackGlasses.Pop(); // ta bort glas
-
+            if (stackGlasses.Count != 0)
+            {
+                Glass g1 = stackGlasses.Pop(); // ta bort glas
+            }
             Dispatcher.Invoke(() =>
             {
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
