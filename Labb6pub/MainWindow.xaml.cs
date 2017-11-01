@@ -41,6 +41,17 @@ namespace Labb6pub
 
         }
 
+        private void SetStartValues()
+        {
+            FillShelveWithGlasses();
+            Dispatcher.Invoke(() =>
+            {
+                NumberOfGuestsLabel.Content = "Number of guests: " + GuestListBox.Items.Count.ToString();
+                NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
+
+            });
+        }
+
         private void FillShelveWithGlasses()
         {
             stackGlasses = new Stack<Glass>();
@@ -63,13 +74,6 @@ namespace Labb6pub
             stackGlasses.Push(glass7);
             stackGlasses.Push(glass8);
 
-
-
-            Dispatcher.Invoke(() =>
-            {
-                NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
-            });
-
         }
         private void QueueToBar()
         {
@@ -77,32 +81,43 @@ namespace Labb6pub
             
                 queueToBar.Enqueue(GuestListBox.Items[0].ToString());
 
-           
+            
+            {
+                String = queueToBar.Peek();
+                FirstInLine = String.Split(' ').First();
+            }
 
+            Dispatcher.Invoke(() =>
+            {
+                
+                RemovedGlass(AddToBartenderListBox, FirstInLine);
+            });
         }
 
 
         private void RemoveGlass()
         {
             ////FirstInLine = queueToBar.Peek();
-            if (queueToBar != null)
-            {
-                String = queueToBar.Peek();
-                FirstInLine = String.Split(' ').First();
-            }
+            //if (queueToBar != null)
+            //{
+            //    String = queueToBar.Peek();
+            //    FirstInLine = String.Split(' ').First();
+            //}
 
             if (stackGlasses.Count != 0)
             {
                 Glass g1 = stackGlasses.Pop(); // ta bort glas
             }
+
+
             Dispatcher.Invoke(() =>
             {
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
-                RemovedGlass?.Invoke(AddToBartenderListBox, FirstInLine);
+                //RemovedGlass?.Invoke(AddToBartenderListBox, FirstInLine);
             });
 
-            
-            
+
+
         }
 
 
@@ -112,6 +127,10 @@ namespace Labb6pub
         {
             //QueueToBar();
 
+
+            SetStartValues();
+
+
             Bouncer b = new Bouncer(AddToGuestListBox);
 
             b.PatronArrived += bar.GetGlass;
@@ -120,7 +139,7 @@ namespace Labb6pub
             b.NewInQueue += QueueToBar;
 
 
-            FillShelveWithGlasses();
+            
 
             //prenumenera här på events
             Task.Run(() =>
@@ -148,6 +167,7 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
                 {
                     GuestListBox.Items.Insert(0, patronInformation);
+                    NumberOfGuestsLabel.Content = "Number of guest: " + GuestListBox.Items.Count.ToString();
 
                 });
 
