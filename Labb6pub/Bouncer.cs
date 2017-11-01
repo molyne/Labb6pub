@@ -14,7 +14,7 @@ namespace Labb6pub
     class Bouncer
     {
         private Action<string> Callback;
-        public event Action <string> PatronArrived;
+        public event Action<Action<string>> PatronArrived;
 
         List<string> GuestList;
 
@@ -46,9 +46,9 @@ namespace Labb6pub
 
         }
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
-        public void Work(Action<string> PatronArrived)
+        public void Work(Action<string> CallBack)
         {
-            this.PatronArrived = PatronArrived;
+           
             
             Task.Run(() =>
                 {
@@ -70,15 +70,16 @@ namespace Labb6pub
 
                         Patron p = new Patron(name);
                         Bartender b = new Bartender();
+                        
 
                         //kö i main
 
                         
 
                         Callback(p.PatronEnters());
-                        Thread.Sleep(1000); //en sekund till baren
-                        PatronArrived?.Invoke(b.GetGlass(name)); //skickar in metoden som ska köras när
-                        //en patron har skapats.
+                        Thread.Sleep(1000);
+                        PatronArrived?.Invoke(CallBack);
+
                     }
                     s.Stop();
 

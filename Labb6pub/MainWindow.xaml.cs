@@ -51,12 +51,13 @@ namespace Labb6pub
             Bartender bar = new Bartender();
             Bouncer b = new Bouncer(AddToGuestListBox);
 
-            b.PatronArrived += GiveGlass; //bartender prenumenerar på att en gäst kommit
+            b.PatronArrived += bar.GetGlass;
 
             //prenumenera här på events
             Task.Run(() =>
             {
                 bar.WaitsForPatron(AddToBartenderListBox);
+               
 
 
 
@@ -65,15 +66,9 @@ namespace Labb6pub
 
             Task.Run(() =>
             {
-                b.Work(GiveGlass);
+                b.Work(AddToBartenderListBox);
             });
-            //Task.Run(() =>
-            //{
-
-            //    bar.GetGlass(CheckTest);
-            //});
-
-
+          
 
             Task.Run(() =>
             {
@@ -101,13 +96,7 @@ namespace Labb6pub
             });
 
         }
-        private void GiveGlass(string bartenderInformation)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                BartenderListbox.Items.Insert(0, bartenderInformation);
-            });
-        }
+        
     }
 }
 

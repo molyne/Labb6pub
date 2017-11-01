@@ -16,10 +16,10 @@ public void WaitsForPatron(Action<string> Callback)
             Callback("1. Waits for patrons.");       
         }
 
-        public string GetGlass(string name)
+        public void GetGlass(Action<string> Callback)
         {
-            
-                return "Gets the glass from the shelve for " + name;
+
+            Callback("Gets the glass from the shelve for ");
             
         }
 
