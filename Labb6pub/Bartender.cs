@@ -23,12 +23,12 @@ public void WaitsForPatron(Action<string> Callback)
             Callback("Gets the glass from the shelve");
             TookGlass?.Invoke();
         }
-        public void PourBeer(Action<string> Callback)
+        public void PourBeer(Action<string> Callback, string name)
         {
             Task.Run(() => 
             {
                 Thread.Sleep(3000);
-                Callback("Pour a glass of beer to ");
+                Callback("Pour a glass of beer to "+name);
             });
             
         }

@@ -25,8 +25,11 @@ namespace Labb6pub
 
     {
         Stack<Glass> stackGlasses;
-        public event Action<Action<string>> RemovedGlass;
+        Queue<string> queueToBar;
+        public event Action<Action<string>,string> RemovedGlass;
         Bartender bar = new Bartender();
+        string FirstInLine;
+        
 
         public MainWindow()
         {
@@ -67,9 +70,23 @@ namespace Labb6pub
             });
 
         }
+        private void QueueToBar()
+        {
+            queueToBar = new Queue<string>();
+
+            for (int i = 0; i < GuestListBox.Items.Count; i++)
+            {
+                queueToBar.Enqueue(((Patron)GuestListBox.Items.GetItemAt(i)).Name);
+
+            }
+            
+
+        }
+
+
         private void RemoveGlass()
         {
-            
+            ////FirstInLine = queueToBar.Peek();
 
             if (stackGlasses.Count != 0)
             {
@@ -78,28 +95,20 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
-                RemovedGlass?.Invoke(AddToBartenderListBox);
+                RemovedGlass?.Invoke(AddToBartenderListBox, "Camilla");
             });
 
+            
             
         }
 
 
-        private void QueueToBar()
-        {
-            ConcurrentQueue<string> queue = new ConcurrentQueue<string>();
-
-            for (int i = 0; i < GuestListBox.Items.Count; i++)
-            {
-                queue.Enqueue(((Patron)GuestListBox.Items.GetItemAt(i)).Name);
-
-            }
-        }
+       
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
+            //QueueToBar();
 
-           
             Bouncer b = new Bouncer(AddToGuestListBox);
 
             b.PatronArrived += bar.GetGlass;
