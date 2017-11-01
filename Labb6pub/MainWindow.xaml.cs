@@ -29,6 +29,7 @@ namespace Labb6pub
         public event Action<Action<string>,string> RemovedGlass;
         Bartender bar = new Bartender();
         string FirstInLine;
+        string String;
         
 
         public MainWindow()
@@ -73,13 +74,10 @@ namespace Labb6pub
         private void QueueToBar()
         {
             queueToBar = new Queue<string>();
-
-            for (int i = 0; i < GuestListBox.Items.Count; i++)
-            {
-                queueToBar.Enqueue(((Patron)GuestListBox.Items.GetItemAt(i)).Name);
-
-            }
             
+                queueToBar.Enqueue(GuestListBox.Items[0].ToString());
+
+           
 
         }
 
@@ -87,6 +85,11 @@ namespace Labb6pub
         private void RemoveGlass()
         {
             ////FirstInLine = queueToBar.Peek();
+            if (queueToBar != null)
+            {
+                String = queueToBar.Peek();
+                FirstInLine = String.Split(' ').First();
+            }
 
             if (stackGlasses.Count != 0)
             {
@@ -95,7 +98,7 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
-                RemovedGlass?.Invoke(AddToBartenderListBox, "Camilla");
+                RemovedGlass?.Invoke(AddToBartenderListBox, FirstInLine);
             });
 
             
@@ -114,6 +117,7 @@ namespace Labb6pub
             b.PatronArrived += bar.GetGlass;
             bar.TookGlass += RemoveGlass;
             RemovedGlass += bar.PourBeer;
+            b.NewInQueue += QueueToBar;
 
 
             FillShelveWithGlasses();

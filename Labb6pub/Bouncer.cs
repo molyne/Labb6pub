@@ -15,6 +15,7 @@ namespace Labb6pub
     {
         private Action<string> Callback;
         public event Action<Action<string>> PatronArrived;
+        public event Action NewInQueue;
 
         List<string> GuestList;
 
@@ -80,6 +81,7 @@ namespace Labb6pub
                         Thread.Sleep(1000); //tid att gå till baren
                         Thread.Sleep(3000); //tid att ta glaset
                         PatronArrived?.Invoke(CallBack);
+                        NewInQueue?.Invoke();
 
                     }
                     s.Stop();
