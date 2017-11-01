@@ -30,8 +30,19 @@ namespace Labb6pub
             InitializeComponent();
 
             //en lista på vilken ordning gästerna kommer i
+           
 
+        }
+
+        private void QueueToBar()
+        {
             ConcurrentQueue<string> queue = new ConcurrentQueue<string>();
+
+            for (int i = 0; i < GuestListBox.Items.Count; i++)
+            {
+                queue.Enqueue(((Patron)GuestListBox.Items.GetItemAt(i)).Name);
+
+            }
         }
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)

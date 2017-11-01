@@ -9,15 +9,18 @@ namespace Labb6pub
 {
     class Bartender
     {
-        public void WaitsForPatron(Action<string> Callback)
+        
+
+public void WaitsForPatron(Action<string> Callback)
         {
             Callback("1. Waits for patrons.");       
         }
 
         public string GetGlass(string name)
-        { 
-           return "Gets the glass from the shelve for "+name;
-
+        {
+            
+                return "Gets the glass from the shelve for " + name;
+            
         }
 
 
