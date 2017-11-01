@@ -14,9 +14,10 @@ namespace Labb6pub
             Callback("1. Waits for patrons.");       
         }
 
-        public string GetGlass()
+        public string GetGlass(string name)
         {
-            return"Gets the glass from the shelve.";
+           return "Gets the glass from the shelve for "+name;
+
         }
 
 
