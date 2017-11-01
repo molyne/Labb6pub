@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,9 @@ namespace Labb6pub
         {
             InitializeComponent();
 
+            //en lista på vilken ordning gästerna kommer i
 
+            ConcurrentQueue<string> queue = new ConcurrentQueue<string>();
         }
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
@@ -37,7 +40,7 @@ namespace Labb6pub
             Bartender bar = new Bartender();
             Bouncer b = new Bouncer(AddToGuestListBox);
 
-            b.PatronArrived += CheckTest;
+            b.PatronArrived += GiveGlass; //bartender prenumenerar på att en gäst kommit
 
             //prenumenera här på events
             Task.Run(() =>
@@ -51,7 +54,7 @@ namespace Labb6pub
 
             Task.Run(() =>
             {
-                b.Work(CheckTest);
+                b.Work(GiveGlass);
             });
             //Task.Run(() =>
             //{
@@ -87,7 +90,7 @@ namespace Labb6pub
             });
 
         }
-        private void CheckTest(string bartenderInformation)
+        private void GiveGlass(string bartenderInformation)
         {
             Dispatcher.Invoke(() =>
             {

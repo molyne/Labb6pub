@@ -73,10 +73,12 @@ namespace Labb6pub
 
                         //kö i main
 
-                        PatronArrived?.Invoke(b.GetGlass(name));
+                        
 
                         Callback(p.PatronEnters());
-                        
+                        Thread.Sleep(1000); //en sekund till baren
+                        PatronArrived?.Invoke(b.GetGlass(name)); //skickar in metoden som ska köras när
+                        //en patron har skapats.
                     }
                     s.Stop();
 

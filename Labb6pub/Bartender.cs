@@ -15,7 +15,7 @@ namespace Labb6pub
         }
 
         public string GetGlass(string name)
-        {
+        { 
            return "Gets the glass from the shelve for "+name;
 
         }
