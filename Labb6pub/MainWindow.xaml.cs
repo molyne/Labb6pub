@@ -54,6 +54,7 @@ namespace Labb6pub
 
         private void FillShelveWithGlasses()
         {
+            //gör en concurrent stack
             stackGlasses = new Stack<Glass>();
 
             Glass glass1 = new Glass();
@@ -93,7 +94,7 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 
-                RemovedGlass(AddToBartenderListBox, FirstInLine);
+                RemovedGlass?.Invoke(AddToBartenderListBox, FirstInLine);
             });
         }
 
