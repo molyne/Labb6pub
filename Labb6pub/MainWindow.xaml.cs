@@ -25,7 +25,7 @@ namespace Labb6pub
 
     {
         Stack<Glass> stackGlasses;
-        Queue<string> queueToBar;
+        ConcurrentQueue<string> queueToBar;
         public event Action<Action<string>,string> RemovedGlass;
         Bartender bar = new Bartender();
         string FirstInLine;
@@ -77,13 +77,16 @@ namespace Labb6pub
         }
         private void QueueToBar()
         {
-            queueToBar = new Queue<string>();
+
+            //gör en concurrent queue
+            queueToBar = new ConcurrentQueue<string>();
             
                 queueToBar.Enqueue(GuestListBox.Items[0].ToString());
 
             
             {
-                String = queueToBar.Peek();
+                
+                bool isSuccessful = queueToBar.TryPeek(out String);
                 FirstInLine = String.Split(' ').First();
             }
 
