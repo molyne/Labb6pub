@@ -10,8 +10,7 @@ namespace Labb6pub
 {
     class Bartender
     {
-
-        public Action<string> BartenderPrint, PatronPrint;
+        public Action<string> BartenderPrint;
         private ConcurrentQueue<Patron> queueToBar;
         private Stack<Glass> stackGlasses;
 
@@ -22,16 +21,6 @@ namespace Labb6pub
             BartenderPrint = Callback;
         }
 
-
-        //public void Work()
-        //{
-        //    while(barIsOpen)
-        //    {
-        //        WaitsForPatron(..);
-        //        GetGlass(..);
-        //        PourBeer(..);
-        //    }
-        //}
         public void WaitsForPatron()
         {
             BartenderPrint("1. Waits for patrons.");
@@ -42,30 +31,29 @@ namespace Labb6pub
                 {
                     Thread.Sleep(10);
                 }
-               
-                 /*   bool isPossible = queueToBar.TryDequeue(out Patron p);*/ //använd blocking collection
-                   
-                
+
+                   bool isPossible = queueToBar.TryDequeue(out Patron p); //använd blocking collection
+
             }
-            
+
         }
 
-        public void GetGlass()
+        public void GetGlass(Patron patron)
         {
             Thread.Sleep(3000); //tid att ta glaset
             BartenderPrint("Gets the glass from the shelve");
             if (stackGlasses != null)
             {
                 Glass g1 = stackGlasses.Pop();
-                PourBeer();
+                PourBeer(patron.Name);
             }
         }
-        public void PourBeer()//(Patron patron) //få objekt patron
+        public void PourBeer(string PatronName)
         {
             Task.Run(() => 
             {
                 Thread.Sleep(3000);
-                BartenderPrint("Pour a glass of beer to "/*+patron.Name*/);
+                BartenderPrint("Pour a glass of beer to "+PatronName);
                
             });
             

@@ -16,16 +16,11 @@ namespace Labb6pub
     {
         private Action<string> Callback;
         public event Action<Patron> PatronArrived;
-        List<string> GuestList;
-
-       
+        List<string> GuestList;      
 
         public Bouncer(Action<string> CallBack)
         {
             this.Callback = CallBack;
-           
-            
-
 
             GuestList = new List<string>();
             {
@@ -57,13 +52,8 @@ namespace Labb6pub
             Stopwatch s = new Stopwatch();
 
             Task.Run(() =>
-                {
-                   
-                    
+                {                  
                      s.Start();           
-                    
-
-                    //  Console.Write(sw.Elapsed.Duration());
 
                     while (s.Elapsed<TimeSpan.FromSeconds(120))//tiden har tagit slut 2 min. 120 sekunder.
                     {   
@@ -71,36 +61,20 @@ namespace Labb6pub
                         int randomTime = r.Next(3000, 10000);
                         Thread.Sleep(randomTime);
 
-                        
-
-                        int randomNumber = r.Next(0, 15);
-
-                        
+                        int randomNumber = r.Next(0, 15);                      
                         string name = GuestList[randomNumber];
 
-                        Patron p = new Patron(name);
-                        //Bartender b = new Bartender();
-                        
-
-                        //kö i main
-
-                        
+                        Patron p = new Patron(name);                     
 
                         Callback(p.PatronEnters());
                         Thread.Sleep(1000); //tid att gå till baren
                         PatronArrived?.Invoke(p);
-                       
-
                     }
                     s.Stop();
 
                 });
             
-        }
+        }       
 
-        
-           
-        
-
-        }
     }
+}

@@ -8,8 +8,6 @@ namespace Labb6pub
 {
     class Patron
     {
-        
-    
 
         public string Name{ get; set; }
 

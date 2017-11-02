@@ -26,14 +26,8 @@ namespace Labb6pub
     {
        private Stack<Glass> stackGlasses;
        private ConcurrentQueue<Patron> queueToBar;
-        Patron FirstPatron;
-        public event Action NewInQueue;
-
-        
-        
-        Bartender bar;
-
-        //private ConcurrentQueue<Patron> QueueToBar;
+       Bartender bar;
+  
 
         public MainWindow()
         {
@@ -82,85 +76,25 @@ namespace Labb6pub
 
         }
 
-        private void AddToQueueToBar(Patron patron) //anropa den här i patron
+        private void AddToQueueToBar(Patron patron) 
         {
             if(queueToBar!=null)
             {
                 queueToBar.Enqueue(patron);
-                NewInQueue?.Invoke();
+               
             }
         }
 
-        //private void QueueToBar()
-        //{
-
-        //    //gör en concurrent queue
-        //    queueToBar = new ConcurrentQueue<Patron>();
-
-        //    for (int i = 0; i < GuestListBox.Items.Count; i++)
-        //    {
-        //        queueToBar.Enqueue((Patron)GuestListBox.Items.GetItemAt(i));
-
-        //    }
-            
-            
-        //        bool isSuccessful = queueToBar.TryPeek(out FirstPatron);
-                
-            
-
-        //    //Dispatcher.Invoke(() =>
-        //    //{
-                
-        //    //    RemovedGlass?.Invoke(FirstPatron);
-        //    //});
-        //}
-
-
-        private void RemoveGlass()
-        {
-            ////FirstInLine = queueToBar.Peek();
-            //if (queueToBar != null)
-            //{
-            //    String = queueToBar.Peek();
-            //    FirstInLine = String.Split(' ').First();
-            //}
-
-            if (stackGlasses.Count != 0)
-            {
-                Glass g1 = stackGlasses.Pop(); // ta bort glas
-            }
-
-
-            Dispatcher.Invoke(() =>
-            {
-                NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
-                //RemovedGlass?.Invoke(AddToBartenderListBox, FirstInLine);
-            });
-
-
-
-        }
-
-
-       
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
-            //QueueToBar();
-
-
             SetStartValues();
-
 
             Bouncer b = new Bouncer(AddToGuestListBox);
 
             b.PatronArrived += AddToQueueToBar;
-            NewInQueue += bar.GetGlass;
+            b.PatronArrived += bar.GetGlass;
          
-
-
-            
-
             //prenumenera här på events
             Task.Run(() =>
             {
@@ -197,6 +131,7 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 BartenderListbox.Items.Insert(0, bartenderInformation);
+                NumberOfEmptyGlassesLabel.Content= "Number of glasses left: " + stackGlasses.Count();
 
             });
 
