@@ -54,25 +54,11 @@ namespace Labb6pub
         private void FillShelveWithGlasses()
         {
             //gör en concurrent stack
-            
+            for (int i = 1; i <= 8; i++)
+            {
+            stackGlasses.Push(new Glass());
 
-            Glass glass1 = new Glass();
-            Glass glass2 = new Glass();
-            Glass glass3 = new Glass();
-            Glass glass4 = new Glass();
-            Glass glass5 = new Glass();
-            Glass glass6 = new Glass();
-            Glass glass7 = new Glass();
-            Glass glass8 = new Glass();
-
-            stackGlasses.Push(glass1);
-            stackGlasses.Push(glass2);
-            stackGlasses.Push(glass3);
-            stackGlasses.Push(glass4);
-            stackGlasses.Push(glass5);
-            stackGlasses.Push(glass6);
-            stackGlasses.Push(glass7);
-            stackGlasses.Push(glass8);
+            }    
 
         }
 
