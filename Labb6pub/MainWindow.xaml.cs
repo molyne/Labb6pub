@@ -25,19 +25,22 @@ namespace Labb6pub
 
     {
         Stack<Glass> stackGlasses;
-        ConcurrentQueue<string> queueToBar;
-        public event Action<string> RemovedGlass;
-        Bartender bar;
-        string FirstInLine;
-        string String;
+       private ConcurrentQueue<Patron> queueToBar;
+        Patron FirstPatron;
+
+        public event Action Queue;
         
+        Bartender bar;
+
+        //private ConcurrentQueue<Patron> QueueToBar;
 
         public MainWindow()
         {
             InitializeComponent();
 
             //en lista på vilken ordning gästerna kommer i
-           bar = new Bartender(AddToBartenderListBox);
+            queueToBar = new ConcurrentQueue<Patron>();
+           bar = new Bartender(AddToBartenderListBox, queueToBar);
 
         }
 
@@ -76,27 +79,39 @@ namespace Labb6pub
             stackGlasses.Push(glass8);
 
         }
-        private void QueueToBar()
+
+        private void AddToQueueToBar(Patron patron) //anropa den här i patron
         {
-
-            //gör en concurrent queue
-            queueToBar = new ConcurrentQueue<string>();
-            
-                queueToBar.Enqueue(GuestListBox.Items[0].ToString());
-
-            
+            if(queueToBar!=null)
             {
-                
-                bool isSuccessful = queueToBar.TryPeek(out String);
-                FirstInLine = String.Split(' ').First();
+                queueToBar.Enqueue(patron);
+                Queue?.Invoke();
             }
-
-            Dispatcher.Invoke(() =>
-            {
-                
-                RemovedGlass?.Invoke(FirstInLine);
-            });
         }
+
+        //private void QueueToBar()
+        //{
+
+        //    //gör en concurrent queue
+        //    queueToBar = new ConcurrentQueue<Patron>();
+
+        //    for (int i = 0; i < GuestListBox.Items.Count; i++)
+        //    {
+        //        queueToBar.Enqueue((Patron)GuestListBox.Items.GetItemAt(i));
+
+        //    }
+            
+            
+        //        bool isSuccessful = queueToBar.TryPeek(out FirstPatron);
+                
+            
+
+        //    //Dispatcher.Invoke(() =>
+        //    //{
+                
+        //    //    RemovedGlass?.Invoke(FirstPatron);
+        //    //});
+        //}
 
 
         private void RemoveGlass()
@@ -137,10 +152,11 @@ namespace Labb6pub
 
             Bouncer b = new Bouncer(AddToGuestListBox);
 
-            b.PatronArrived += bar.GetGlass;
+
             bar.TookGlass += RemoveGlass;
-            RemovedGlass += bar.PourBeer;
-            b.NewInQueue += QueueToBar;
+            //bar.RemovedGlass += bar.PourBeer;
+            b.PatronArrived += AddToQueueToBar;
+            Queue += bar.WaitsForPatron;
 
 
             
@@ -148,7 +164,7 @@ namespace Labb6pub
             //prenumenera här på events
             Task.Run(() =>
             {
-                bar.WaitsForPatron(AddToBartenderListBox);
+                bar.WaitsForPatron();
             });
 
 

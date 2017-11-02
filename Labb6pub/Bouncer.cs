@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Timers;
 using System.Diagnostics;
+using System.Collections.Concurrent;
 
 namespace Labb6pub
 {
@@ -14,16 +15,16 @@ namespace Labb6pub
     class Bouncer
     {
         private Action<string> Callback;
-        public event Action<Action<string>> PatronArrived;
+        public event Action<Patron> PatronArrived;
         public event Action NewInQueue;
+        List<string> GuestList;
 
        
-
-        List<string> GuestList;
 
         public Bouncer(Action<string> CallBack)
         {
             this.Callback = CallBack;
+           
             
 
 
@@ -89,7 +90,7 @@ namespace Labb6pub
                         Callback(p.PatronEnters());
                         Thread.Sleep(1000); //tid att gå till baren
                         Thread.Sleep(3000); //tid att ta glaset
-                        PatronArrived?.Invoke(CallBack);
+                        PatronArrived?.Invoke(p);
                         NewInQueue?.Invoke();
 
                     }
