@@ -27,8 +27,9 @@ namespace Labb6pub
         Stack<Glass> stackGlasses;
        private ConcurrentQueue<Patron> queueToBar;
         Patron FirstPatron;
+        public event Action NewInQueue;
 
-        public event Action Queue;
+        
         
         Bartender bar;
 
@@ -85,7 +86,7 @@ namespace Labb6pub
             if(queueToBar!=null)
             {
                 queueToBar.Enqueue(patron);
-                Queue?.Invoke();
+                NewInQueue?.Invoke();
             }
         }
 
@@ -152,11 +153,9 @@ namespace Labb6pub
 
             Bouncer b = new Bouncer(AddToGuestListBox);
 
-
-            bar.TookGlass += RemoveGlass;
-            //bar.RemovedGlass += bar.PourBeer;
             b.PatronArrived += AddToQueueToBar;
-            Queue += bar.WaitsForPatron;
+            NewInQueue += bar.GetGlass;
+         
 
 
             
