@@ -24,7 +24,7 @@ namespace Labb6pub
     public partial class MainWindow : Window
 
     {
-        Stack<Glass> stackGlasses;
+       private Stack<Glass> stackGlasses;
        private ConcurrentQueue<Patron> queueToBar;
         Patron FirstPatron;
         public event Action NewInQueue;
@@ -41,7 +41,8 @@ namespace Labb6pub
 
             //en lista på vilken ordning gästerna kommer i
             queueToBar = new ConcurrentQueue<Patron>();
-           bar = new Bartender(AddToBartenderListBox, queueToBar);
+            stackGlasses = new Stack<Glass>();
+            bar = new Bartender(AddToBartenderListBox, queueToBar, stackGlasses);
 
         }
 
@@ -59,7 +60,7 @@ namespace Labb6pub
         private void FillShelveWithGlasses()
         {
             //gör en concurrent stack
-            stackGlasses = new Stack<Glass>();
+            
 
             Glass glass1 = new Glass();
             Glass glass2 = new Glass();

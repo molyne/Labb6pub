@@ -13,10 +13,12 @@ namespace Labb6pub
 
         public Action<string> BartenderPrint, PatronPrint;
         private ConcurrentQueue<Patron> queueToBar;
+        private Stack<Glass> stackGlasses;
 
-        public Bartender(Action<string> Callback, ConcurrentQueue<Patron> QueueToBar)
+        public Bartender(Action<string> Callback, ConcurrentQueue<Patron> QueueToBar, Stack<Glass> StackGlasses)
         {
             this.queueToBar = QueueToBar;
+            this.stackGlasses = StackGlasses;
             BartenderPrint = Callback;
         }
 
@@ -52,7 +54,11 @@ namespace Labb6pub
         {
             Thread.Sleep(3000); //tid att ta glaset
             BartenderPrint("Gets the glass from the shelve");
-            PourBeer();
+            if (stackGlasses != null)
+            {
+                Glass g1 = stackGlasses.Pop();
+                PourBeer();
+            }
         }
         public void PourBeer()//(Patron patron) //få objekt patron
         {

@@ -8,5 +8,6 @@ namespace Labb6pub
 {
     class Glass
     {
+
     }
 }
