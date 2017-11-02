@@ -10,11 +10,16 @@ namespace Labb6pub
     class Bartender
     {
         public event Action TookGlass;
-        
+        public Action<string> BartenderPrint, PatronPrint;
 
-public void WaitsForPatron(Action<string> Callback)
+        public Bartender(Action<string> Callback)
         {
-            Callback("1. Waits for patrons.");       
+            BartenderPrint = Callback;
+        }
+
+        public void WaitsForPatron(Action<string> Callback)
+        {
+            BartenderPrint("1. Waits for patrons.");       
         }
 
         public void GetGlass(Action<string> Callback)
@@ -23,12 +28,12 @@ public void WaitsForPatron(Action<string> Callback)
             Callback("Gets the glass from the shelve");
             TookGlass?.Invoke();
         }
-        public void PourBeer(Action<string> Callback, string name)
+        public void PourBeer(string name)
         {
             Task.Run(() => 
             {
                 Thread.Sleep(3000);
-                Callback("Pour a glass of beer to "+name);
+                BartenderPrint("Pour a glass of beer to "+name);
             });
             
         }

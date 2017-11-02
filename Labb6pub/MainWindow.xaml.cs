@@ -26,8 +26,8 @@ namespace Labb6pub
     {
         Stack<Glass> stackGlasses;
         ConcurrentQueue<string> queueToBar;
-        public event Action<Action<string>,string> RemovedGlass;
-        Bartender bar = new Bartender();
+        public event Action<string> RemovedGlass;
+        Bartender bar;
         string FirstInLine;
         string String;
         
@@ -37,7 +37,7 @@ namespace Labb6pub
             InitializeComponent();
 
             //en lista på vilken ordning gästerna kommer i
-           
+           bar = new Bartender(AddToBartenderListBox);
 
         }
 
@@ -94,7 +94,7 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 
-                RemovedGlass?.Invoke(AddToBartenderListBox, FirstInLine);
+                RemovedGlass?.Invoke(FirstInLine);
             });
         }
 

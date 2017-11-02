@@ -79,7 +79,7 @@ namespace Labb6pub
                         string name = GuestList[randomNumber];
 
                         Patron p = new Patron(name);
-                        Bartender b = new Bartender();
+                        //Bartender b = new Bartender();
                         
 
                         //kö i main
