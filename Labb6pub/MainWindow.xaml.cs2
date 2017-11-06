@@ -25,6 +25,7 @@ namespace Labb6pub
     public partial class MainWindow : Window
 
     {   /* VAD JAG GJORT:
+        - ändrat guestlist i bouncer, ligger nu utanför konstruktorn och mindre kod
         - gjort blockingcollections
         - lags till elapsedtime för när gästerna kommer in
         - ändrat knappen till close bar efter man öppnat baren
@@ -37,10 +38,10 @@ namespace Labb6pub
        //private ConcurrentQueue<Patron> queueToBar;
         private BlockingCollection<Patron> queueToBar;
         private BlockingCollection<Glass> stackGlasses;
-        
+         
 
         Bartender bar;
-        
+        Bouncer b;
   
         public MainWindow()
         {
@@ -83,14 +84,6 @@ namespace Labb6pub
             Thread.Sleep(1000); // tid för gästen att komma till kön
             {
                 queueToBar.Add(patron);
-               
-
-                Dispatcher.Invoke(() =>
-                {
-                    QueueToBar.Items.Insert(0, patron.Name);
-                });
-
-                
             }
 
         }
@@ -102,12 +95,10 @@ namespace Labb6pub
 
             SetStartValues();
 
-           Bouncer b = new Bouncer(AddToGuestListBox);
+           b = new Bouncer(AddToGuestListBox);
             
            b.PatronArrived += AddToQueueToBar;
-           
-          
-
+            
             b.PatronArrived += bar.GetGlass;
             
             //prenumenera här på events
@@ -157,8 +148,6 @@ namespace Labb6pub
             });
 
         }
-
-        
 
       
     }

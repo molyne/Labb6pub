@@ -21,6 +21,7 @@ namespace Labb6pub
             
             return Name + " enters and goes to the bar.";
         }
+        
 
     }
 

@@ -16,11 +16,13 @@
         <Label x:Name="WaitressLabel" Content="Waitress" HorizontalAlignment="Left" Margin="319,108,0,0" VerticalAlignment="Top"/>
         <Label x:Name="GuestsLabel" Content="Guests" HorizontalAlignment="Left" Margin="564,108,0,0" VerticalAlignment="Top"/>
         <Button x:Name="PauseButtonGuest" Content="Pause" HorizontalAlignment="Left" Margin="639,356,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="OpenOrCloseBarButton" Content="Open/close bar" HorizontalAlignment="Left" Margin="20,26,0,0" VerticalAlignment="Top" Width="98" Click="OpenOrCloseBarButton_Click"/>
+        <Button x:Name="OpenOrCloseBarButton" Content="Open bar" HorizontalAlignment="Left" Margin="20,26,0,0" VerticalAlignment="Top" Width="98" Click="OpenOrCloseBarButton_Click"/>
         <Button x:Name="PanicButton" Content="Panic" HorizontalAlignment="Left" Margin="149,26,0,0" VerticalAlignment="Top" Width="75"/>
         <Label x:Name="HoursToCloseLabel" Content="Minutes to closing:" HorizontalAlignment="Left" Margin="20,299,0,0" VerticalAlignment="Top"/>
         <Label x:Name="NumberOfGuestsLabel" Content="Number of guests:" HorizontalAlignment="Left" Margin="20,325,0,0" VerticalAlignment="Top"/>
         <Label x:Name="NumberOfEmptyGlassesLabel" Content="Number of glasses left:" HorizontalAlignment="Left" Margin="20,356,0,0" VerticalAlignment="Top"/>
         <Label x:Name="NumberOfChairsLabel" Content="Chairs available" HorizontalAlignment="Left" Margin="20,387,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="QueueToBar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="254,325,0,0"/>
+        <Label Content="Queue to the bar" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="254,281,0,0" RenderTransformOrigin="0.868,2.923"/>
     </Grid>
 </Window>
