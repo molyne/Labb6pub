@@ -11,34 +11,27 @@ namespace Labb6pub
     class Bartender
     {
         public Action<string> BartenderPrint;
-       // private ConcurrentQueue<Patron> queueToBar;
-       
-        
-        //private Stack<Glass> stackGlasses;
         private BlockingCollection<Glass> stackGlasses;
         private BlockingCollection<Patron> queueToBar;
-        //private Action<string> addToBartenderListBox;
+        bool isGlassAvailable;
+
+       
 
 
 
-        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> StackGlasses)
+        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> StackGlasses, bool IsGlassAvailable)
         {
             this.queueToBar = QueueToBar;
             this.stackGlasses = StackGlasses;
+            this.isGlassAvailable = IsGlassAvailable;
             BartenderPrint = Callback;
         }
 
 
 
-        public void WaitsForPatron()
+        public void DequePatron()
         {
             BartenderPrint("1. Waits for patrons.");
-
-
-        
-
-        
-
 
             if (queueToBar != null)
             {
@@ -62,6 +55,7 @@ namespace Labb6pub
         public void GetGlass(Patron patron)
         {
             
+
             if (stackGlasses.Count > 0)
             {
                 Thread.Sleep(3000); //tid att ta glaset
@@ -70,7 +64,9 @@ namespace Labb6pub
                 PourBeer(patron.Name);
             }
 
-            else BartenderPrint("Waits for new glasses");
+            else {
+                BartenderPrint("Waiting for new glasses");
+            }
         }
         public void PourBeer(string PatronName)
         {
@@ -82,6 +78,8 @@ namespace Labb6pub
             });
             
         }
+
+      
 
 
     }

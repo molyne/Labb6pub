@@ -30,17 +30,21 @@ namespace Labb6pub
         - ändrat knappen till close bar efter man öppnat baren
         - flyttat på thread.sleep(1000), tiden det tar för gästen att komma fram till baren
         */
-        
 
 
-       //private Stack<Glass> stackGlasses;
-       //private ConcurrentQueue<Patron> queueToBar;
+
+        //private Stack<Glass> stackGlasses;
+        //private ConcurrentQueue<Patron> queueToBar;
         private BlockingCollection<Patron> queueToBar;
         private BlockingCollection<Glass> stackGlasses;
         private BlockingCollection<Chair> chairs;
-        
+
+        bool IsGlassAvailable = true;
+
+
 
         Bartender bar;
+        Bouncer b;
         
   
         public MainWindow()
@@ -53,7 +57,7 @@ namespace Labb6pub
             //stackGlasses = new Stack<Glass>();
             stackGlasses = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
             chairs = new BlockingCollection<Chair>();
-            bar = new Bartender(AddToBartenderListBox, queueToBar, stackGlasses);
+            bar = new Bartender(AddToBartenderListBox, queueToBar, stackGlasses, IsGlassAvailable);
 
         }
 
@@ -74,10 +78,9 @@ namespace Labb6pub
 
         private void FillShelveWithGlasses()
         {
-            for (int i = 1; i <= 8; i++)
+            for (int i = 1; i <= 2; i++)
             {
             stackGlasses.Add(new Glass());
-
             }    
         }
 
@@ -93,17 +96,16 @@ namespace Labb6pub
         {
             Thread.Sleep(1000); // tid för gästen att komma till kön
             {
-                queueToBar.Add(patron);
-               
+                queueToBar.Add(patron);             
 
                 Dispatcher.Invoke(() =>
                 {
                     QueueToBar.Items.Insert(0, patron.Name);
                 });
-
-                
+              
+                if (stackGlasses.Count == 0)
+                    b.PatronArrived -= bar.GetGlass;
             }
-
         }
 
 
@@ -113,20 +115,20 @@ namespace Labb6pub
 
             SetStartValues();
 
-           Bouncer b = new Bouncer(AddToGuestListBox);
-            
-           b.PatronArrived += AddToQueueToBar;
-           
-          
+            b = new Bouncer(AddToGuestListBox);
+
+            b.PatronArrived += AddToQueueToBar;
+
+
 
             b.PatronArrived += bar.GetGlass;
-            
+
             //prenumenera här på events
 
 
             Task bartender = Task.Run(() =>
             {
-                bar.WaitsForPatron();
+                bar.DequePatron();
                    
                
             });
