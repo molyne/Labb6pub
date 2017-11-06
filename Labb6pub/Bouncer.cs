@@ -47,9 +47,9 @@ namespace Labb6pub
 
         }
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
-        public void Work(Action<string> CallBack)
+        public void Work(BlockingCollection<Chair> Chairs)
         {
-
+          
             Random r = new Random();
             Stopwatch s = new Stopwatch();
 
@@ -74,7 +74,7 @@ namespace Labb6pub
                         elapsedtime = elapsedminutes + elapsedseconds;
                         
 
-                        Patron p = new Patron(CallBack);
+                        Patron p = new Patron(Callback, Chairs);
                         p.Name = GuestList[randomNumber];
 
                         

@@ -79,7 +79,7 @@ namespace Labb6pub
 
         private void FillShelveWithGlasses()
         {
-            for (int i = 1; i <= 2; i++)
+            for (int i = 1; i <= 8; i++)
             {
             stackGlasses.Add(new Glass());
             }    
@@ -117,7 +117,7 @@ namespace Labb6pub
 
             b.PatronArrived += AddToQueueToBar;
 
-            p = new Patron(AddToGuestListBox);
+            p = new Patron(AddToGuestListBox,chairs);
             bar.GotBeer += p.PatronSearchForChair;
 
 
@@ -136,7 +136,7 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(AddToGuestListBox);
+                b.Work(chairs);
 
             });
           
@@ -154,8 +154,8 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
                 {
                     GuestListBox.Items.Insert(0, patronInformation);
-                    NumberOfGuestsLabel.Content = "Number of guest: " + GuestListBox.Items.Count.ToString();
-
+                    NumberOfGuestsLabel.Content = "Number of guest: ";
+                    NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
                 });
 
         }
@@ -166,6 +166,7 @@ namespace Labb6pub
             {
                 BartenderListbox.Items.Insert(0, bartenderInformation);
                 NumberOfEmptyGlassesLabel.Content= "Number of glasses left: " + stackGlasses.Count();
+                
 
             });
 
