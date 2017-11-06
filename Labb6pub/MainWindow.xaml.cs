@@ -117,7 +117,7 @@ namespace Labb6pub
 
             b.PatronArrived += AddToQueueToBar;
 
-            p = new Patron(AddToGuestListBox,chairs);
+            p = new Patron(AddToGuestListBox,chairs,queueToBar);
             bar.GotBeer += p.PatronSearchForChair;
 
 
@@ -136,7 +136,7 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs);
+                b.Work(chairs,queueToBar);
 
             });
           

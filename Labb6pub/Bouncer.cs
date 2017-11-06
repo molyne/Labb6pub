@@ -47,7 +47,7 @@ namespace Labb6pub
 
         }
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
-        public void Work(BlockingCollection<Chair> Chairs)
+        public void Work(BlockingCollection<Chair> Chairs,BlockingCollection<Patron> QueueToBar)
         {
           
             Random r = new Random();
@@ -74,7 +74,7 @@ namespace Labb6pub
                         elapsedtime = elapsedminutes + elapsedseconds;
                         
 
-                        Patron p = new Patron(Callback, Chairs);
+                        Patron p = new Patron(Callback, Chairs, QueueToBar);
                         p.Name = GuestList[randomNumber];
 
                         

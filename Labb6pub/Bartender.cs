@@ -61,7 +61,7 @@ namespace Labb6pub
             if (stackGlasses.Count > 0)
             {
                 Thread.Sleep(3000); //tid att ta glaset
-                bool isPossible2 = stackGlasses.TryTake(out Glass g1);
+                stackGlasses.TryTake(out Glass g1);
                 BartenderPrint("Gets the glass from the shelve");
                 PourBeer(patron.Name);
             }
