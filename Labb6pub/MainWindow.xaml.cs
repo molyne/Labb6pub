@@ -37,6 +37,7 @@ namespace Labb6pub
        //private ConcurrentQueue<Patron> queueToBar;
         private BlockingCollection<Patron> queueToBar;
         private BlockingCollection<Glass> stackGlasses;
+        private BlockingCollection<Chair> chairs;
         
 
         Bartender bar;
@@ -51,6 +52,7 @@ namespace Labb6pub
             queueToBar = new BlockingCollection<Patron>(); // concurrentqueue är standardklass
             //stackGlasses = new Stack<Glass>();
             stackGlasses = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
+            chairs = new BlockingCollection<Chair>();
             bar = new Bartender(AddToBartenderListBox, queueToBar, stackGlasses);
 
         }
@@ -59,11 +61,13 @@ namespace Labb6pub
         {
             
             FillShelveWithGlasses();
+            CreateChairs();
            
             Dispatcher.Invoke(() =>
             {
                 NumberOfGuestsLabel.Content = "Number of guests: " + GuestListBox.Items.Count.ToString();
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
+                NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
             });
             
         }
@@ -75,7 +79,14 @@ namespace Labb6pub
             stackGlasses.Add(new Glass());
 
             }    
+        }
 
+        private void CreateChairs()
+        {
+            for (int i = 1; i < 9; i++)
+            {
+                chairs.Add(new Chair());
+            }
         }
 
         private void AddToQueueToBar(Patron patron) 
