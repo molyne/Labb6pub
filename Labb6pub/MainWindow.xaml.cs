@@ -30,7 +30,7 @@ namespace Labb6pub
         private BlockingCollection<Chair> chairs;
 
         bool IsGlassAvailable = true;
-        int emptyGlasses = 0;
+        bool IsBarOpen = false;
 
         Bartender bar;
         Bouncer b;
@@ -99,7 +99,7 @@ namespace Labb6pub
         {
             OpenOrCloseBarButton.Content = "Close bar";
 
-           
+            IsBarOpen = true;
 
             SetStartValues();
 
@@ -112,7 +112,7 @@ namespace Labb6pub
             b.PatronArrived += AddToQueueToBar;
             b.PatronArrived += bar.GetGlass;
             bar.GotBeer += p.PatronSearchForChair;
-            p.Finishedbeer += w.PickUpEmptyGlasses;
+            
 
             //prenumenera här på events
 
@@ -133,8 +133,10 @@ namespace Labb6pub
           
            
             Task waitress = Task.Run(() =>
-            {
-                //gör en task åt waitress.
+            {   while (IsBarOpen)
+                {
+                    w.PickUpEmptyGlasses();
+                }//gör en task åt waitress.
             });
 
         }
@@ -168,6 +170,7 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 WaitressListBox.Items.Insert(0, waitressInformation);
+                NumberOfEmptyGlassesLabel.Content = "Numbers of glasses:" + stackGlasses.Count; 
             });
         }
 

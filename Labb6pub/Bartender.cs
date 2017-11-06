@@ -17,10 +17,6 @@ namespace Labb6pub
 
         bool isGlassAvailable;
 
-       
-
-
-
         public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> StackGlasses, bool IsGlassAvailable)
         {
             this.queueToBar = QueueToBar;
