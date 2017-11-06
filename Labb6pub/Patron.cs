@@ -15,6 +15,7 @@ namespace Labb6pub
 
         BlockingCollection<Chair> chairs;
         private BlockingCollection<Patron> queueToBar;
+        public event Action Finishedbeer;
 
 
         public string Name{ get; set; }
@@ -56,10 +57,12 @@ namespace Labb6pub
 
             int randomTime = r.Next(10000, 20000);
 
-            Thread.Sleep(50000);
+            Thread.Sleep(randomTime);
 
             PatronPrint(name + " finished the beer and leaves the bar.");
             chairs.Add(new Chair());
+            Finishedbeer?.Invoke();
+
         }
        
         

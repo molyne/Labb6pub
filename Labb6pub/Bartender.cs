@@ -33,7 +33,7 @@ namespace Labb6pub
 
         public void WaitsForPatron()
         {
-            BartenderPrint("1. Waits for patrons.");             
+            BartenderPrint("1. Waiting for patrons.");             
 
         }
 

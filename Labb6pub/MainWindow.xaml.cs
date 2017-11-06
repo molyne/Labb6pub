@@ -24,28 +24,17 @@ namespace Labb6pub
     /// </summary>
     public partial class MainWindow : Window
 
-    {   /* VAD JAG GJORT:
-        - gjort blockingcollections
-        - lags till elapsedtime för när gästerna kommer in
-        - ändrat knappen till close bar efter man öppnat baren
-        - flyttat på thread.sleep(1000), tiden det tar för gästen att komma fram till baren
-        */
-
-
-
-        //private Stack<Glass> stackGlasses;
-        //private ConcurrentQueue<Patron> queueToBar;
+    {   
         private BlockingCollection<Patron> queueToBar;
         private BlockingCollection<Glass> stackGlasses;
         private BlockingCollection<Chair> chairs;
 
         bool IsGlassAvailable = true;
 
-
-
         Bartender bar;
         Bouncer b;
         Patron p;
+        Waitress w;
         
   
         public MainWindow()
@@ -87,7 +76,7 @@ namespace Labb6pub
 
         private void CreateChairs()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 9; i++)
             {
                 chairs.Add(new Chair());
             }
@@ -115,13 +104,14 @@ namespace Labb6pub
 
             b = new Bouncer(AddToGuestListBox);
 
-            b.PatronArrived += AddToQueueToBar;
-
             p = new Patron(AddToGuestListBox,chairs,queueToBar);
-            bar.GotBeer += p.PatronSearchForChair;
 
+            w = new Waitress(AddToWaitressListBox,stackGlasses);
 
+            b.PatronArrived += AddToQueueToBar;
             b.PatronArrived += bar.GetGlass;
+            bar.GotBeer += p.PatronSearchForChair;
+            p.Finishedbeer += w.PickUpEmptyGlasses;
 
             //prenumenera här på events
 
@@ -170,6 +160,14 @@ namespace Labb6pub
 
             });
 
+        }
+
+        private void AddToWaitressListBox(string waitressInformation)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                WaitressListBox.Items.Insert(0, waitressInformation);
+            });
         }
 
         
