@@ -22,7 +22,5 @@
         <Label x:Name="NumberOfGuestsLabel" Content="Number of guests:" HorizontalAlignment="Left" Margin="20,325,0,0" VerticalAlignment="Top"/>
         <Label x:Name="NumberOfEmptyGlassesLabel" Content="Number of glasses left:" HorizontalAlignment="Left" Margin="20,356,0,0" VerticalAlignment="Top"/>
         <Label x:Name="NumberOfChairsLabel" Content="Chairs available" HorizontalAlignment="Left" Margin="20,387,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="QueueToBar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="254,325,0,0"/>
-        <Label Content="Queue to the bar" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="254,281,0,0" RenderTransformOrigin="0.868,2.923"/>
     </Grid>
 </Window>

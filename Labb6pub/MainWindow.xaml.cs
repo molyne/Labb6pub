@@ -45,6 +45,7 @@ namespace Labb6pub
 
         Bartender bar;
         Bouncer b;
+        Patron p;
         
   
         public MainWindow()
@@ -97,11 +98,6 @@ namespace Labb6pub
             Thread.Sleep(1000); // tid för gästen att komma till kön
             {
                 queueToBar.Add(patron);             
-
-                Dispatcher.Invoke(() =>
-                {
-                    QueueToBar.Items.Insert(0, patron.Name);
-                });
               
                 if (stackGlasses.Count == 0)
                     b.PatronArrived -= bar.GetGlass;
@@ -113,12 +109,16 @@ namespace Labb6pub
         {
             OpenOrCloseBarButton.Content = "Close bar";
 
+           
+
             SetStartValues();
 
             b = new Bouncer(AddToGuestListBox);
 
             b.PatronArrived += AddToQueueToBar;
 
+            p = new Patron(AddToGuestListBox);
+            bar.GotBeer += p.PatronSearchForChair;
 
 
             b.PatronArrived += bar.GetGlass;
@@ -128,7 +128,7 @@ namespace Labb6pub
 
             Task bartender = Task.Run(() =>
             {
-                bar.DequePatron();
+                bar.WaitsForPatron();
                    
                
             });

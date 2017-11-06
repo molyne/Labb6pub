@@ -13,6 +13,8 @@ namespace Labb6pub
         public Action<string> BartenderPrint;
         private BlockingCollection<Glass> stackGlasses;
         private BlockingCollection<Patron> queueToBar;
+        public event Action<string> GotBeer;
+
         bool isGlassAvailable;
 
        
@@ -29,28 +31,28 @@ namespace Labb6pub
 
 
 
-        public void DequePatron()
+        public void WaitsForPatron()
         {
-            BartenderPrint("1. Waits for patrons.");
-
-            if (queueToBar != null)
-            {
-
-                while (queueToBar.Count == 0)
-                {
-                    Thread.Sleep(10);
-
-                }
-
-
-                queueToBar.TryTake(out Patron p); //använd blocking collection
-                
-
-            }
-
-                
+            BartenderPrint("1. Waits for patrons.");             
 
         }
+
+            public void DequePatron()
+            {
+                 if (queueToBar != null)
+                 {
+
+                   while (queueToBar.Count == 0)
+                    {
+                    Thread.Sleep(10);
+
+                    }
+
+
+                queueToBar.TryTake(out Patron p); //använd blocking collection            
+
+            }
+            }
 
         public void GetGlass(Patron patron)
         {
@@ -74,7 +76,8 @@ namespace Labb6pub
             {
                 Thread.Sleep(3000);
                 BartenderPrint("Pour a glass of beer to " + PatronName);
-               
+                DequePatron();
+                GotBeer?.Invoke(PatronName);
             });
             
         }

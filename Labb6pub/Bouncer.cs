@@ -74,7 +74,8 @@ namespace Labb6pub
                         elapsedtime = elapsedminutes + elapsedseconds;
                         
 
-                        Patron p = new Patron(GuestList[randomNumber]);
+                        Patron p = new Patron(CallBack);
+                        p.Name = GuestList[randomNumber];
 
                         
                         Callback($"[{elapsedtime}] {p.PatronEnters()}");
