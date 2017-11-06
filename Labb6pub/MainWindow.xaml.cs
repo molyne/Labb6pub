@@ -87,7 +87,7 @@ namespace Labb6pub
 
         private void CreateChairs()
         {
-            for (int i = 1; i < 9; i++)
+            for (int i = 0; i < 4; i++)
             {
                 chairs.Add(new Chair());
             }
