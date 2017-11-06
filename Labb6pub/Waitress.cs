@@ -25,6 +25,16 @@ namespace Labb6pub
         {
             Thread.Sleep(10000);
             WaitressPrint("Picks up empty glasses");
+            DishEmptyGlasses();
+        }
+        public void DishEmptyGlasses()
+        {
+            Thread.Sleep(15000);
+            WaitressPrint("Dishes the glasses");
+            for (int i = 1; i <= (9-stackGlasses.Count); i++)
+            {
+                stackGlasses.Add(new Glass());
+            }
         }
     }
 }

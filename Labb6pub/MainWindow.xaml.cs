@@ -30,6 +30,7 @@ namespace Labb6pub
         private BlockingCollection<Chair> chairs;
 
         bool IsGlassAvailable = true;
+        int emptyGlasses = 0;
 
         Bartender bar;
         Bouncer b;
