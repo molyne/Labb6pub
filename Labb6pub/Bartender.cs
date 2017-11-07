@@ -13,7 +13,9 @@ namespace Labb6pub
         public Action<string> BartenderPrint;
         private BlockingCollection<Glass> stackGlasses;
         private BlockingCollection<Patron> queueToBar;
-        public event Action<string> GotBeer;
+        public event Action GotBeer;
+
+        Patron FirstInQueue;
 
         bool isGlassAvailable;
 
@@ -35,45 +37,52 @@ namespace Labb6pub
 
             public void DequePatron()
             {
-                 if (queueToBar != null)
-                 {
 
-                   while (queueToBar.Count == 0)
-                    {
+                while (queueToBar.Count == 0)
+                {
                     Thread.Sleep(10);
+                }
 
+            if (queueToBar != null)
+            {
+                Task.Run(() =>
+                {
+                    Thread.Sleep(4000);
+                    if (stackGlasses.Count == 0)
+                    {
+                        BartenderPrint("Waiting for new glasses");
                     }
-
-
-                queueToBar.TryTake(out Patron p); //använd blocking collection            
-
+                });
             }
+
+            FirstInQueue = queueToBar.Take();
+            //använd blocking collection     
+        
+           
             }
 
         public void GetGlass(Patron patron)
         {
-            
-
             if (stackGlasses.Count > 0)
             {
                 Thread.Sleep(3000); //tid att ta glaset
                 stackGlasses.TryTake(out Glass g1);
                 BartenderPrint("Gets the glass from the shelve");
-                PourBeer(patron.Name);
+                PourBeer();
             }
 
-            else {
-                BartenderPrint("Waiting for new glasses");
-            }
+            //else {
+            //    BartenderPrint("Waiting for new glasses");
+            //}
         }
-        public void PourBeer(string PatronName)
+        public void PourBeer()
         {
             Task.Run(() => 
             {
                 Thread.Sleep(3000);
-                BartenderPrint("Pour a glass of beer to " + PatronName);
                 DequePatron();
-                GotBeer?.Invoke(PatronName);
+                BartenderPrint("Pour a glass of beer to " + FirstInQueue.Name);
+                GotBeer?.Invoke();
             });
             
         }

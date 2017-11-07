@@ -69,7 +69,7 @@ namespace Labb6pub
 
         private void FillShelveWithGlasses()
         {
-            for (int i = 1; i <= 8; i++)
+            for (int i = 1; i <= 4; i++)
             {
             stackGlasses.Add(new Glass());
             }    
@@ -88,9 +88,6 @@ namespace Labb6pub
             Thread.Sleep(1000); // tid för gästen att komma till kön
             {
                 queueToBar.Add(patron);             
-              
-                if (stackGlasses.Count == 0)
-                    b.PatronArrived -= bar.GetGlass;
             }
         }
 

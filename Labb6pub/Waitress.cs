@@ -8,32 +8,36 @@ using System.Threading.Tasks;
 
 namespace Labb6pub
 {
-    
+    //tre stackar med glas, en på hyllan(emptyglasses), en för (patronhasglass), en för (dirtyglasses, som bara waitress behöver veta om).
 
     class Waitress
     {
         public Action<string> WaitressPrint;
-        private BlockingCollection<Glass> stackGlasses;
+        private BlockingCollection<Glass> glassesOnShelf;
 
         public Waitress(Action<string> CallBack, BlockingCollection<Glass> StackGlasses)
         {
             WaitressPrint = CallBack;
-            this.stackGlasses = StackGlasses;
+            this.glassesOnShelf = StackGlasses;
         }
 
         public void PickUpEmptyGlasses()
         {
-            Thread.Sleep(10000);
+            Thread.Sleep(40000);
             WaitressPrint("Picks up empty glasses");
+            // emptyGlassesOnTables
+
+            
+
             DishEmptyGlasses();
         }
-        public void DishEmptyGlasses()
+        public void DishEmptyGlasses(/*List<Glass> dirtyGlasses*/)
         {
             Thread.Sleep(15000);
             WaitressPrint("Dishes the glasses");
-            for (int i = 1; i <= (9-stackGlasses.Count); i++)
+            for (int i = 1; i <= (9-glassesOnShelf.Count); i++)
             {
-                stackGlasses.Add(new Glass());
+                glassesOnShelf.Add(new Glass());
             }
         }
     }
