@@ -116,6 +116,7 @@ namespace Labb6pub
             b.PatronArrived += AddToQueueToBar;
             b.PatronArrived += bar.GetGlass;
             bar.GotBeer += p.PatronSearchForChair;
+            p.PatronLeaved += w.AddEmptyGlasses;
             
 
             //prenumenera här på events

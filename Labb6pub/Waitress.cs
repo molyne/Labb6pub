@@ -15,12 +15,18 @@ namespace Labb6pub
         public Action<string> WaitressPrint;
         private BlockingCollection<Glass> filledWithBeerGlasses;
         private BlockingCollection<Glass> glassesOnShelve;
-        public BlockingCollection<Glass> dirtyGlasses = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
+        public List<Glass> dirtyGlasses = new List<Glass>();
 
         public Waitress(Action<string> CallBack, BlockingCollection<Glass> FilledWithBeerGlasses, BlockingCollection<Glass> GlassesOnShelve)
         {
             WaitressPrint = CallBack;
             this.filledWithBeerGlasses = FilledWithBeerGlasses;
+            this.glassesOnShelve = GlassesOnShelve;
+        }
+
+        public void AddEmptyGlasses()
+        {
+            dirtyGlasses.Add(filledWithBeerGlasses.Take());
         }
 
         public void PickUpEmptyGlasses()
@@ -28,7 +34,8 @@ namespace Labb6pub
             Thread.Sleep(40000);
             WaitressPrint("Picks up empty glasses");
             // emptyGlassesOnTables
-            if (filledWithBeerGlasses.Count > 0)
+
+            if(dirtyGlasses.Count>0)
                 DishEmptyGlasses();
             else
                 WaitressPrint("Found no glasses");
@@ -37,9 +44,12 @@ namespace Labb6pub
         {
             Thread.Sleep(15000);
             WaitressPrint("Dishes the glasses");
-          
-                dirtyGlasses.Add(filledWithBeerGlasses.Take());
-                glassesOnShelve.Add(dirtyGlasses.Take());
+
+            for (int i = 0; i < dirtyGlasses.Count; i++)
+            {
+                glassesOnShelve.Add(dirtyGlasses[i]);
+
+            }
             
         }
     }

@@ -12,6 +12,7 @@ namespace Labb6pub
     {
 
         public Action<string> PatronPrint;
+        public event Action PatronLeaved;
 
         BlockingCollection<Chair> chairs;
         private BlockingCollection<Patron> queueToBar;
@@ -60,6 +61,7 @@ namespace Labb6pub
 
             PatronPrint(/*name +*/ " finished the beer and leaves the bar.");
             chairs.Add(new Chair());
+            PatronLeaved?.Invoke();
             
 
         }
