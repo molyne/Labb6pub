@@ -26,7 +26,9 @@ namespace Labb6pub
 
     {   
         private BlockingCollection<Patron> queueToBar;
-        private BlockingCollection<Glass> stackGlasses;
+        private BlockingCollection<Glass> glassesFilledWithBeer;
+        private BlockingCollection<Glass> glassesOnShelve;
+
         private BlockingCollection<Chair> chairs;
 
         bool IsGlassAvailable = true;
@@ -46,34 +48,38 @@ namespace Labb6pub
             //queueToBar = new ConcurrentQueue<Patron>();
             queueToBar = new BlockingCollection<Patron>(); // concurrentqueue är standardklass
             //stackGlasses = new Stack<Glass>();
-            stackGlasses = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
+            glassesFilledWithBeer = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
+            glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
+
             chairs = new BlockingCollection<Chair>();
-            bar = new Bartender(AddToBartenderListBox, queueToBar, stackGlasses, IsGlassAvailable);
+            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve);
 
         }
 
         private void SetStartValues()
         {
-            
             FillShelveWithGlasses();
+        
             CreateChairs();
            
             Dispatcher.Invoke(() =>
             {
                 NumberOfGuestsLabel.Content = "Number of guests: " + GuestListBox.Items.Count.ToString();
-                NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + stackGlasses.Count();
+                NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + glassesOnShelve.Count();
                 NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
             });
             
         }
 
-        private void FillShelveWithGlasses()
+        public void FillShelveWithGlasses()
         {
             for (int i = 1; i <= 4; i++)
             {
-            stackGlasses.Add(new Glass());
-            }    
+                glassesOnShelve.Add(new Glass());
+            }
         }
+
+
 
         private void CreateChairs()
         {
@@ -96,6 +102,7 @@ namespace Labb6pub
         {
             OpenOrCloseBarButton.Content = "Close bar";
 
+
             IsBarOpen = true;
 
             SetStartValues();
@@ -104,7 +111,7 @@ namespace Labb6pub
 
             p = new Patron(AddToGuestListBox,chairs,queueToBar);
 
-            w = new Waitress(AddToWaitressListBox,stackGlasses);
+            w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve);
 
             b.PatronArrived += AddToQueueToBar;
             b.PatronArrived += bar.GetGlass;
@@ -155,11 +162,10 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 BartenderListbox.Items.Insert(0, bartenderInformation);
-                NumberOfEmptyGlassesLabel.Content= "Number of glasses left: " + stackGlasses.Count();
+                NumberOfEmptyGlassesLabel.Content= "Number of glasses left: " + glassesOnShelve.Count();
                 
 
             });
-
         }
 
         private void AddToWaitressListBox(string waitressInformation)
@@ -167,7 +173,7 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 WaitressListBox.Items.Insert(0, waitressInformation);
-                NumberOfEmptyGlassesLabel.Content = "Numbers of glasses:" + stackGlasses.Count; 
+                NumberOfEmptyGlassesLabel.Content = "Numbers of glasses:" + glassesOnShelve.Count; 
             });
         }
 

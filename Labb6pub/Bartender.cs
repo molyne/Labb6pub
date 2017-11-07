@@ -11,7 +11,8 @@ namespace Labb6pub
     class Bartender
     {
         public Action<string> BartenderPrint;
-        private BlockingCollection<Glass> stackGlasses;
+        private BlockingCollection<Glass> glassesOnShelve;
+        private BlockingCollection<Glass> glassesFilledWithBeer;
         private BlockingCollection<Patron> queueToBar;
         public event Action GotBeer;
 
@@ -19,15 +20,18 @@ namespace Labb6pub
 
         bool isGlassAvailable;
 
-        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> StackGlasses, bool IsGlassAvailable)
+
+        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> GlassesFilledWithBeer, bool IsGlassAvailable, BlockingCollection<Glass> GlassesOnShelve)
         {
             this.queueToBar = QueueToBar;
-            this.stackGlasses = StackGlasses;
+            this.glassesFilledWithBeer = GlassesFilledWithBeer;
             this.isGlassAvailable = IsGlassAvailable;
+            this.glassesOnShelve = GlassesOnShelve;
             BartenderPrint = Callback;
         }
 
 
+       
 
         public void WaitsForPatron()
         {
@@ -48,7 +52,7 @@ namespace Labb6pub
                 Task.Run(() =>
                 {
                     Thread.Sleep(4000);
-                    if (stackGlasses.Count == 0)
+                    if (glassesOnShelve.Count == 0)
                     {
                         BartenderPrint("Waiting for new glasses");
                     }
@@ -63,10 +67,10 @@ namespace Labb6pub
 
         public void GetGlass(Patron patron)
         {
-            if (stackGlasses.Count > 0)
+            if (glassesOnShelve.Count > 0)
             {
                 Thread.Sleep(3000); //tid att ta glaset
-                stackGlasses.TryTake(out Glass g1);
+                glassesFilledWithBeer.Add(glassesOnShelve.Take());
                 BartenderPrint("Gets the glass from the shelve");
                 PourBeer();
             }
