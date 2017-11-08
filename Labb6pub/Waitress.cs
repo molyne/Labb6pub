@@ -32,12 +32,13 @@ namespace Labb6pub
         public void PickUpEmptyGlasses()
         {
             Thread.Sleep(10000);
-            WaitressPrint("Picks up empty glasses");
 
-
-            if(dirtyGlasses.Count>0)
+            if (dirtyGlasses.Count > 0)
+            {
+                WaitressPrint("Picks up empty glasses");
                 DishEmptyGlasses();
-            else
+            }
+            else //todo gör så det skrivs ut en gång
                 WaitressPrint("Found no glasses");
         }
         public void DishEmptyGlasses(/*List<Glass> dirtyGlasses*/)
