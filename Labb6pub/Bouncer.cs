@@ -72,22 +72,19 @@ namespace Labb6pub
 
 
                         elapsedtime = elapsedminutes + elapsedseconds;
-                        
+
 
                         Patron p = new Patron(Callback, Chairs, QueueToBar);
                         p.Name = GuestList[randomNumber];
 
-                        
+
                         Callback($"[{elapsedtime}] {p.PatronEnters()}");
 
-
-                    
                         PatronArrived?.Invoke(p);
                     }
-                    s.Stop();
 
                 });
-            
+
         }       
 
     }

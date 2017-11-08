@@ -129,7 +129,6 @@ namespace Labb6pub
                
             });
 
-
             Task bouncer = Task.Run(() =>
             {
                 b.Work(chairs,queueToBar);
@@ -154,6 +153,8 @@ namespace Labb6pub
                     GuestListBox.Items.Insert(0, patronInformation);
                     NumberOfGuestsLabel.Content = "Number of guest: ";
                     NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
+                    NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
+
                 });
 
         }
@@ -163,7 +164,8 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 BartenderListbox.Items.Insert(0, bartenderInformation);
-                NumberOfEmptyGlassesLabel.Content= "Number of glasses left: " + glassesOnShelve.Count();
+                NumberOfEmptyGlassesLabel.Content= "Number of glasses on the shelve: " + glassesOnShelve.Count();
+                NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
                 
 
             });
@@ -174,7 +176,9 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 WaitressListBox.Items.Insert(0, waitressInformation);
-                NumberOfEmptyGlassesLabel.Content = "Numbers of glasses:" + glassesOnShelve.Count; 
+                NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
+                NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
+
             });
         }
 

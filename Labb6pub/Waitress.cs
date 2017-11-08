@@ -33,7 +33,7 @@ namespace Labb6pub
         {
             Thread.Sleep(40000);
             WaitressPrint("Picks up empty glasses");
-            // emptyGlassesOnTables
+
 
             if(dirtyGlasses.Count>0)
                 DishEmptyGlasses();
@@ -46,9 +46,10 @@ namespace Labb6pub
             WaitressPrint("Dishes the glasses");
 
             for (int i = 0; i < dirtyGlasses.Count; i++)
-            {
+            {   
                 glassesOnShelve.Add(dirtyGlasses[i]);
-
+              
+                
             }
             
         }
