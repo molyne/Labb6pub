@@ -36,6 +36,8 @@ namespace Labb6pub
 
         bool IsGlassAvailable = true;
         bool IsBarOpen = false;
+        int NumberOfGlasses = 8;
+        int walkToBarTime = 1000;
 
         Bartender bar;
         Bouncer b;
@@ -76,7 +78,7 @@ namespace Labb6pub
 
         public void FillShelveWithGlasses()
         {
-            for (int i = 1; i <= 4; i++)
+            for (int i = 1; i <= NumberOfGlasses; i++)
             {
                 glassesOnShelve.Add(new Glass());
             }
@@ -94,7 +96,7 @@ namespace Labb6pub
 
         private void AddToQueueToBar(Patron patron) 
         {
-            Thread.Sleep(1000); // tid för gästen att komma till kön
+            Thread.Sleep(walkToBarTime); // tid för gästen att komma till kön
             {
                 queueToBar.Add(patron);             
             }

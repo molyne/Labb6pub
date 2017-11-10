@@ -18,6 +18,9 @@ namespace Labb6pub
         private BlockingCollection<Patron> queueToBar;
         private string name;
 
+        private int searchForChairTime = 1000;
+        private int walkToTableTime = 4000;
+
        
 
         public string Name{ get; set; }
@@ -40,7 +43,7 @@ namespace Labb6pub
         {
             this.name = Name;
 
-            Thread.Sleep(1000);
+            Thread.Sleep(searchForChairTime);
             PatronPrint(name+" search for a chair.");
           
         
@@ -49,7 +52,7 @@ namespace Labb6pub
         }
         public void PatronSits()
         {
-            Thread.Sleep(4000);
+            Thread.Sleep(walkToTableTime);
             PatronPrint(name+" sits and drink his/hers beer");
 
             chairs.TryTake(out Chair c);

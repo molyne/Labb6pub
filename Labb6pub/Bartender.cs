@@ -16,6 +16,9 @@ namespace Labb6pub
         private BlockingCollection<Patron> queueToBar;
         public event Action<string> GotBeer;
 
+        private int takeGlassTime = 3000;
+        private int pourBeerTime = 3000;
+
         Patron FirstInQueue;
 
         bool isGlassAvailable;
@@ -51,7 +54,7 @@ namespace Labb6pub
             {
                 Task.Run(() =>
                 {
-                    Thread.Sleep(4000);
+                    Thread.Sleep(4000); //så att den skrivs ut efter alla fått sin öl
                     if (glassesOnShelve.Count == 0)
                     {
                         BartenderPrint("Waiting for new glasses");
@@ -69,7 +72,7 @@ namespace Labb6pub
         {
             if (glassesOnShelve.Count > 0)
             {
-                Thread.Sleep(3000); //tid att ta glaset
+                Thread.Sleep(takeGlassTime); //tid att ta glaset
                 glassesFilledWithBeer.Add(glassesOnShelve.Take());
                 BartenderPrint("Gets the glass from the shelve");
                 PourBeer();
@@ -83,7 +86,7 @@ namespace Labb6pub
         {
             Task.Run(() => 
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(pourBeerTime);
                 DequePatron();
                 BartenderPrint("Pour a glass of beer to " + FirstInQueue.Name);
                 GotBeer?.Invoke(FirstInQueue.Name);
