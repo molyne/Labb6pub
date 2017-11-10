@@ -18,6 +18,7 @@ namespace Labb6pub
         public event Action<Patron> PatronArrived;
         List<string> GuestList;
         string elapsedtime;
+        int numberOfGuestsOnList;
 
         public Bouncer(Action<string> CallBack)
         {
@@ -58,13 +59,13 @@ namespace Labb6pub
                 {
                 s.Start();
 
-                while (s.Elapsed < TimeSpan.FromSeconds(120))//tiden har tagit slut 2 min. 120 sekunder.
+                while (s.Elapsed < TimeSpan.FromSeconds(120) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
                 {
 
                         int randomTime = r.Next(3000, 10000);
                         Thread.Sleep(randomTime);
 
-                        int randomNumber = r.Next(0, 15);
+                        int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
 
                         string elapsedminutes = s.Elapsed.Minutes.ToString("00:");
@@ -73,10 +74,14 @@ namespace Labb6pub
 
                         elapsedtime = elapsedminutes + elapsedseconds;
 
-
+                        
                         Patron p = new Patron(Callback, Chairs, QueueToBar);
+
                         p.Name = GuestList[randomNumber];
 
+                        GuestList.RemoveAt(randomNumber); //ta bort gäst från gästlistan
+
+                        numberOfGuestsOnList = GuestList.Count(); // antal namn kvar på listan
 
                         Callback($"[{elapsedtime}] {p.PatronEnters()}");
 
