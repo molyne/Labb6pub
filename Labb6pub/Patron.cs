@@ -16,7 +16,9 @@ namespace Labb6pub
 
         BlockingCollection<Chair> chairs;
         private BlockingCollection<Patron> queueToBar;
+        private string name;
 
+       
 
         public string Name{ get; set; }
 
@@ -25,6 +27,8 @@ namespace Labb6pub
             this.chairs = Chairs;
             this.PatronPrint = PatronPrint;
             this.queueToBar = QueueToBar;
+
+         
         }
 
         public string PatronEnters()
@@ -32,25 +36,27 @@ namespace Labb6pub
             
             return Name + " enters and goes to the bar.";
         }
-        public void PatronSearchForChair(/*string name*/)
+        public void PatronSearchForChair(string Name)
         {
+            this.name = Name;
+
             Thread.Sleep(1000);
-            PatronPrint(/*name+*/" search for a chair.");
+            PatronPrint(name+" search for a chair.");
           
         
            if(chairs.Count>0)
-            PatronSits(/*name*/);                      
+            PatronSits();                      
         }
-        public void PatronSits(/*string name*/)
+        public void PatronSits()
         {
             Thread.Sleep(4000);
-            PatronPrint(/*name+*/" sits and drink his/hers beer");
+            PatronPrint(name+" sits and drink his/hers beer");
 
             chairs.TryTake(out Chair c);
 
-            PatronLeaves(/*name*/);
+            PatronLeaves();
         }
-        public void PatronLeaves(/*string name*/)
+        public void PatronLeaves()
         {
 
             Random r = new Random();
@@ -59,7 +65,7 @@ namespace Labb6pub
 
             Thread.Sleep(randomTime);
 
-            PatronPrint(/*name +*/ " finished the beer and leaves the bar.");
+            PatronPrint(name + " finished the beer and leaves the bar.");
             chairs.Add(new Chair());
             PatronLeaved?.Invoke();
             

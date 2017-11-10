@@ -14,7 +14,7 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesOnShelve;
         private BlockingCollection<Glass> glassesFilledWithBeer;
         private BlockingCollection<Patron> queueToBar;
-        public event Action GotBeer;
+        public event Action<string> GotBeer;
 
         Patron FirstInQueue;
 
@@ -86,7 +86,7 @@ namespace Labb6pub
                 Thread.Sleep(3000);
                 DequePatron();
                 BartenderPrint("Pour a glass of beer to " + FirstInQueue.Name);
-                GotBeer?.Invoke();
+                GotBeer?.Invoke(FirstInQueue.Name);
             });
             
         }

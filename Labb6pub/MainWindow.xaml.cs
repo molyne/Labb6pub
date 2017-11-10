@@ -22,6 +22,9 @@ namespace Labb6pub
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    //använd cancelltoken grej för att avsluta.
+
+
     public partial class MainWindow : Window
 
     {   
