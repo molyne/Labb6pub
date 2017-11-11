@@ -26,5 +26,6 @@
         <Label x:Name="DirtyGlassesLabel" Content="" HorizontalAlignment="Left" Margin="319,316,0,0" VerticalAlignment="Top"/>
         <Label x:Name="NumberOfFilledGlassesLabel" Content="Number of filled glasses:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="236,290,0,0"/>
         <Label x:Name="NumberofDirtyglassesLabel" Content="Number of dirty glasses:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="236,333,0,0"/>
+        <Label x:Name="NumberOfTakenChairs" Content="Number of taken chairs:" HorizontalAlignment="Left" Margin="250,376,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

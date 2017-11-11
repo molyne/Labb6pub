@@ -14,7 +14,8 @@ namespace Labb6pub
         public Action<string> PatronPrint;
         public event Action PatronLeaved;
 
-        BlockingCollection<Chair> chairs;
+        private BlockingCollection<Chair> chairs;
+        public BlockingCollection<Chair> takenChairs = new BlockingCollection<Chair>(); //ändra till private sen
         private BlockingCollection<Patron> queueToBar;
 
         private int searchForChairTime = 1000;
@@ -45,16 +46,14 @@ namespace Labb6pub
             Thread.Sleep(searchForChairTime);
             PatronPrint(FirstInQueueName+" search for a chair.");
           
-        
-           if(chairs.Count>0)
+            takenChairs.Add(chairs.Take());
             PatronSits(FirstInQueueName);                      
         }
         public void PatronSits(string FirstInQueueName2)
         {
+
             Thread.Sleep(walkToTableTime);
             PatronPrint(FirstInQueueName2+" sits and drink his/hers beer");
-
-            chairs.TryTake(out Chair c);
 
             PatronLeaves(FirstInQueueName2);
         }
@@ -68,7 +67,7 @@ namespace Labb6pub
             Thread.Sleep(randomTime);
 
             PatronPrint(FirstInQueueName3 + " finished the beer and leaves the bar.");
-            chairs.Add(new Chair());
+            chairs.Add(takenChairs.Take());
             PatronLeaved?.Invoke();
             
 

@@ -36,7 +36,8 @@ namespace Labb6pub
 
         bool IsGlassAvailable = true;
         bool IsBarOpen = false;
-        int NumberOfGlasses = 8;
+        private int numberOfGlasses = 8;
+        private int numberOfChairs = 9;
         int walkToBarTime = 1000;
 
         Bartender bar;
@@ -78,7 +79,7 @@ namespace Labb6pub
 
         public void FillShelveWithGlasses()
         {
-            for (int i = 1; i <= NumberOfGlasses; i++)
+            for (int i = 1; i <= numberOfGlasses; i++)
             {
                 glassesOnShelve.Add(new Glass());
             }
@@ -88,7 +89,7 @@ namespace Labb6pub
 
         private void CreateChairs()
         {
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < numberOfChairs; i++)
             {
                 chairs.Add(new Chair());
             }
@@ -163,6 +164,7 @@ namespace Labb6pub
                     NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
                     NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
                     NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
+                    NumberOfTakenChairs.Content = "Number of taken chairs: " + p.takenChairs.Count();
 
                 });
      
