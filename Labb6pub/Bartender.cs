@@ -38,7 +38,7 @@ namespace Labb6pub
 
         public void WaitsForPatron()
         {
-            BartenderPrint("1. Waiting for patrons.");             
+            BartenderPrint("Waiting for patrons.");             
 
         }
 
@@ -75,7 +75,7 @@ namespace Labb6pub
             {
                 Thread.Sleep(takeGlassTime); //tid att ta glaset
                 glassesFilledWithBeer.Add(glassesOnShelve.Take());
-                BartenderPrint("Gets the glass from the shelve");
+                BartenderPrint("Gets the glass from the shelve.");
                 PourBeer();
             }
 
@@ -89,14 +89,14 @@ namespace Labb6pub
             {
                 Thread.Sleep(pourBeerTime);
                 DequePatron();
-                BartenderPrint("Pour a glass of beer to " + FirstInQueue.Name);
+                BartenderPrint("Pour a glass of beer to " + FirstInQueue.Name + ".");
                 GotBeer?.Invoke(FirstInQueue.Name);
             });
             
         }
         public void BartenderGoesHome()
         {
-            BartenderPrint("Bartender goes home");
+            BartenderPrint("Bartender goes home.");
         }
 
       

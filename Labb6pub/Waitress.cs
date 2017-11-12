@@ -36,18 +36,18 @@ namespace Labb6pub
         {
             Thread.Sleep(pickingGlassesTime);
 
-            if (dirtyGlasses.Count > 0)
+            if (dirtyGlasses.Count > 0 )
             {
-                WaitressPrint($"Picks up {dirtyGlasses.Count} glasses");
+                WaitressPrint($"Picks up {dirtyGlasses.Count} glasses.");
                 DishEmptyGlasses();
             }
             else //todo gör så det skrivs ut en gång..eller det kanske ska göra det(skrivas ut flera)?
-                WaitressPrint("Found no glasses");
+                WaitressPrint("Found no glasses.");
         }
         public void DishEmptyGlasses(/*List<Glass> dirtyGlasses*/)
         {
             Thread.Sleep(dishingGlassesTime);
-            WaitressPrint("Dishes the glasses");
+            WaitressPrint("Dishes the glasses.");
 
             for (int i = 0; i < dirtyGlasses.Count; i++)
             {   
@@ -58,7 +58,7 @@ namespace Labb6pub
         }
         public void WaitressGoHome()
         {
-            WaitressPrint("Waitress go home.");
+            WaitressPrint("Waitress goes home.");
         }
     }
 }

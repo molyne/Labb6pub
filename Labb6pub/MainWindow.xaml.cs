@@ -27,14 +27,20 @@ namespace Labb6pub
 
     public partial class MainWindow : Window
 
+        // number of taken chairs slutar alltid på 1 eftersom listbox måste uppdateras en gång till?
+        // samma sak med number of guests in pub..
+        
     {   
         private BlockingCollection<Patron> queueToBar;
-        private Queue<Patron> guestsInBar;
+        private Queue<Patron> guestsInPub;
         private BlockingCollection<Glass> glassesFilledWithBeer;
         private BlockingCollection<Glass> glassesOnShelve;
 
         private BlockingCollection<Chair> chairs;
         Stopwatch timer = new Stopwatch();
+        string elapsedtime;
+
+
 
         public event Action AllGuestsLeft;
 
@@ -57,7 +63,7 @@ namespace Labb6pub
             //en lista på vilken ordning gästerna kommer i
             //queueToBar = new ConcurrentQueue<Patron>();
             queueToBar = new BlockingCollection<Patron>(); // concurrentqueue är standardklass
-            guestsInBar = new Queue<Patron>();
+            guestsInPub = new Queue<Patron>();
             //stackGlasses = new Stack<Glass>();
             glassesFilledWithBeer = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
             glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
@@ -67,6 +73,8 @@ namespace Labb6pub
 
         }
 
+       
+
         private void SetStartValues()
         {
             FillShelveWithGlasses();
@@ -75,12 +83,15 @@ namespace Labb6pub
            
             Dispatcher.Invoke(() =>
             {
-                NumberOfGuestsLabel.Content = "Number of guests: " + guestsInBar.Count();
+                NumberOfGuestsLabel.Content = "Number of guests in the pub: " + guestsInPub.Count();
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + glassesOnShelve.Count();
                 NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
             });
             
         }
+
+        
+       
 
         public void FillShelveWithGlasses()
         {
@@ -107,18 +118,22 @@ namespace Labb6pub
                 queueToBar.Add(patron);             
             }
         }
-        private void AddToGuestsInBar(Patron patron)
+        private void AddToGuestsInPub(Patron patron)
         {
-            guestsInBar.Enqueue(patron);
+            guestsInPub.Enqueue(patron);
         
         }
-        private void RemoveGuestInBar()
+        private void RemoveGuestInPub()
         {
-            if (guestsInBar != null)
-                guestsInBar.Dequeue();
-            if (guestsInBar.Count == 0)
-                AllGuestsLeft?.Invoke();
+            if (guestsInPub != null)
+                guestsInPub.Dequeue();
+            if (guestsInPub.Count == 0)
 
+            {
+                AllGuestsLeft?.Invoke();
+                
+               
+            }
         }
 
 
@@ -126,7 +141,7 @@ namespace Labb6pub
         {
             timer.Start();
 
-            OpenOrCloseBarButton.Content = "Close bar";
+            OpenOrCloseBarButton.IsEnabled = false;
 
 
             IsBarOpen = true;
@@ -141,10 +156,11 @@ namespace Labb6pub
 
             b.PatronArrived += AddToQueueInBar;
             b.PatronArrived += bar.GetGlass;
-            b.AddToGuestInBar += AddToGuestsInBar;
+            b.PatronArrived += AddToGuestsInPub;
+            //b.AddToGuestInBar += AddToGuestsInBar;
             bar.GotBeer += p.PatronSearchForChair;
             p.PatronLeaved += w.AddEmptyGlasses;
-            p.PatronLeaved += RemoveGuestInBar;
+            p.PatronLeaved += RemoveGuestInPub;
             AllGuestsLeft += w.WaitressGoHome;
             AllGuestsLeft += bar.BartenderGoesHome;
             
@@ -167,7 +183,7 @@ namespace Labb6pub
           
            
             Task waitress = Task.Run(() =>
-            {   while (timer.Elapsed < TimeSpan.FromSeconds(120))
+            {   while (timer.Elapsed < TimeSpan.FromSeconds(120)) // tills alla gästerna gått hem?
                 {
                     w.PickUpEmptyGlasses();
                 }//gör en task åt waitress.
@@ -175,6 +191,19 @@ namespace Labb6pub
 
         }
 
+        private string GetElapsedTime()
+        {
+
+            string elapsedminutes = timer.Elapsed.Minutes.ToString("00:");
+            string elapsedseconds = timer.Elapsed.Seconds.ToString("00");
+
+
+            elapsedtime= elapsedminutes + elapsedseconds;
+
+            return elapsedtime;
+
+           
+        }
         private void AddToGuestListBox(string patronInformation)
         {
 
@@ -182,8 +211,8 @@ namespace Labb6pub
                 Dispatcher.Invoke(() =>
            
                 {
-                    GuestListBox.Items.Insert(0, patronInformation);
-                    NumberOfGuestsLabel.Content = "Number of guests: "+guestsInBar.Count();
+                    GuestListBox.Items.Insert(0, $"[{GetElapsedTime()}] {patronInformation}");
+                    NumberOfGuestsLabel.Content = "Number of guests in the pub: "+guestsInPub.Count();
                     NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
                     NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
                     NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
@@ -200,8 +229,7 @@ namespace Labb6pub
         {
             Dispatcher.Invoke(() =>
             {
-                BartenderListbox.Items.Insert(0, bartenderInformation);
-                NumberOfGuestsLabel.Content = "Number of guests: " + guestsInBar.Count();
+                BartenderListbox.Items.Insert(0, $"[{GetElapsedTime()}] {bartenderInformation}");
                 NumberOfEmptyGlassesLabel.Content= "Number of glasses on the shelve: " + glassesOnShelve.Count();
                 NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
                 
@@ -212,11 +240,11 @@ namespace Labb6pub
         private void AddToWaitressListBox(string waitressInformation)
         {
             Dispatcher.Invoke(() =>
+            
             {
-                WaitressListBox.Items.Insert(0, waitressInformation);
+                WaitressListBox.Items.Insert(0, $"[{GetElapsedTime()}] {waitressInformation}");
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
                 NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
-                NumberOfGuestsLabel.Content = "Number of guests: " + guestsInBar.Count();
 
             });
         }

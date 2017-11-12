@@ -44,16 +44,18 @@ namespace Labb6pub
            
 
             Thread.Sleep(searchForChairTime);
-            PatronPrint(FirstInQueueName+" search for a chair.");
+            PatronPrint(FirstInQueueName+" searches for a chair.");
           
-            takenChairs.Add(chairs.Take());
+           
             PatronSits(FirstInQueueName);                      
         }
         public void PatronSits(string FirstInQueueName2)
         {
 
             Thread.Sleep(walkToTableTime);
-            PatronPrint(FirstInQueueName2+" sits and drink his/hers beer");
+            takenChairs.Add(chairs.Take());
+            PatronPrint(FirstInQueueName2+" sits and drinks his/hers beer.");
+            
 
             PatronLeaves(FirstInQueueName2);
         }

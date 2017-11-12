@@ -20,7 +20,6 @@ namespace Labb6pub
         Stopwatch stopwatch = new Stopwatch();
 
         List<string> GuestList;
-        string elapsedtime;
         int numberOfGuestsOnList;
 
         public Bouncer(Action<string> CallBack)
@@ -71,14 +70,6 @@ namespace Labb6pub
 
                             int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
-
-                            string elapsedminutes = Timer.Elapsed.Minutes.ToString("00:");
-                            string elapsedseconds = Timer.Elapsed.Seconds.ToString("00");
-
-
-                            elapsedtime = elapsedminutes + elapsedseconds;
-
-
                             Patron p = new Patron(Callback, Chairs, QueueToBar);
 
                             p.Name = GuestList[randomNumber];
@@ -89,7 +80,7 @@ namespace Labb6pub
 
                             AddToGuestInBar?.Invoke(p);
 
-                            Callback($"[{elapsedtime}] {p.PatronEnters()}");
+                            Callback(p.PatronEnters());
                             PatronArrived?.Invoke(p);
 
                     }
