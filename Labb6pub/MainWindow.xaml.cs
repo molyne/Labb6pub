@@ -34,6 +34,7 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesOnShelve;
 
         private BlockingCollection<Chair> chairs;
+        Stopwatch timer = new Stopwatch();
 
         public event Action AllGuestsLeft;
 
@@ -123,6 +124,8 @@ namespace Labb6pub
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
+            timer.Start();
+
             OpenOrCloseBarButton.Content = "Close bar";
 
 
@@ -158,13 +161,13 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs,queueToBar);
+                b.Work(chairs,queueToBar,timer);
 
             });
           
            
             Task waitress = Task.Run(() =>
-            {   while (IsBarOpen)
+            {   while (timer.Elapsed < TimeSpan.FromSeconds(120))
                 {
                     w.PickUpEmptyGlasses();
                 }//gör en task åt waitress.

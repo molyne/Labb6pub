@@ -17,6 +17,7 @@ namespace Labb6pub
         private Action<string> Callback;
         public event Action<Patron> PatronArrived;
         public event Action<Patron> AddToGuestInBar;
+        Stopwatch stopwatch = new Stopwatch();
 
         List<string> GuestList;
         string elapsedtime;
@@ -50,8 +51,9 @@ namespace Labb6pub
 
         }
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
-        public void Work(BlockingCollection<Chair> Chairs,BlockingCollection<Patron> QueueToBar)
+        public void Work(BlockingCollection<Chair> Chairs,BlockingCollection<Patron> QueueToBar, Stopwatch Timer)
         {
+            this.stopwatch = Timer;
           
             Random r = new Random();
             Stopwatch s = new Stopwatch();
@@ -59,11 +61,9 @@ namespace Labb6pub
            
             Task patron = Task.Run(() =>
                 {
-                s.Start();
-
-
-                    while (s.Elapsed < TimeSpan.FromSeconds(120) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
-                {
+               
+                    while (Timer.Elapsed < TimeSpan.FromSeconds(120) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
+                    {
                       
                         
                             int randomTime = r.Next(3000, 10000);
@@ -72,8 +72,8 @@ namespace Labb6pub
                             int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
 
-                            string elapsedminutes = s.Elapsed.Minutes.ToString("00:");
-                            string elapsedseconds = s.Elapsed.Seconds.ToString("00");
+                            string elapsedminutes = Timer.Elapsed.Minutes.ToString("00:");
+                            string elapsedseconds = Timer.Elapsed.Seconds.ToString("00");
 
 
                             elapsedtime = elapsedminutes + elapsedseconds;
@@ -92,17 +92,13 @@ namespace Labb6pub
                             Callback($"[{elapsedtime}] {p.PatronEnters()}");
                             PatronArrived?.Invoke(p);
 
-                        }
+                    }
 
+            Callback("Bouncer goes home");
                     
-
                 });
 
-        }    
-        public void BouncerGoesHome()
-        {
-            Callback("Bouncer goes home");
-        }
+        }         
 
     }
 }
