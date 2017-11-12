@@ -68,6 +68,8 @@ namespace Labb6pub
                             int randomTime = r.Next(3000, 10000);
                             Thread.Sleep(randomTime);
 
+                            numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
+
                             int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
                             Patron p = new Patron(Callback, Chairs, QueueToBar);
@@ -76,7 +78,7 @@ namespace Labb6pub
 
                             GuestList.RemoveAt(randomNumber); //ta bort gäst från gästlistan
 
-                            numberOfGuestsOnList = GuestList.Count(); // antal namn kvar på listan
+                            
 
                             AddToGuestInBar?.Invoke(p);
 

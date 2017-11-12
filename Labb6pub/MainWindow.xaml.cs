@@ -29,6 +29,7 @@ namespace Labb6pub
 
         // number of taken chairs slutar alltid på 1 eftersom listbox måste uppdateras en gång till?
         // samma sak med number of guests in pub..
+        // tiden måste uppdateras hela tiden?
         
     {   
         private BlockingCollection<Patron> queueToBar;
@@ -232,6 +233,7 @@ namespace Labb6pub
                 BartenderListbox.Items.Insert(0, $"[{GetElapsedTime()}] {bartenderInformation}");
                 NumberOfEmptyGlassesLabel.Content= "Number of glasses on the shelve: " + glassesOnShelve.Count();
                 NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
+                HoursToCloseLabel.Content = "Seconds to closing: " + (120 - timer.Elapsed.Seconds);
                 
 
             });
