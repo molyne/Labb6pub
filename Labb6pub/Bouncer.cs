@@ -16,6 +16,8 @@ namespace Labb6pub
     {
         private Action<string> Callback;
         public event Action<Patron> PatronArrived;
+        public event Action<Patron> AddToGuestInBar;
+
         List<string> GuestList;
         string elapsedtime;
         int numberOfGuestsOnList;
@@ -59,38 +61,48 @@ namespace Labb6pub
                 {
                 s.Start();
 
-                while (s.Elapsed < TimeSpan.FromSeconds(120) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
+
+                    while (s.Elapsed < TimeSpan.FromSeconds(120) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
                 {
-
-                        int randomTime = r.Next(3000, 10000);
-                        Thread.Sleep(randomTime);
-
-                        int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
-
-
-                        string elapsedminutes = s.Elapsed.Minutes.ToString("00:");
-                        string elapsedseconds = s.Elapsed.Seconds.ToString("00");
-
-
-                        elapsedtime = elapsedminutes + elapsedseconds;
-
+                      
                         
-                        Patron p = new Patron(Callback, Chairs, QueueToBar);
+                            int randomTime = r.Next(3000, 10000);
+                            Thread.Sleep(randomTime);
 
-                        p.Name = GuestList[randomNumber];
+                            int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
-                        GuestList.RemoveAt(randomNumber); //ta bort gäst från gästlistan
 
-                        numberOfGuestsOnList = GuestList.Count(); // antal namn kvar på listan
+                            string elapsedminutes = s.Elapsed.Minutes.ToString("00:");
+                            string elapsedseconds = s.Elapsed.Seconds.ToString("00");
 
-                        Callback($"[{elapsedtime}] {p.PatronEnters()}");
 
-                        PatronArrived?.Invoke(p);
-                    }
+                            elapsedtime = elapsedminutes + elapsedseconds;
+
+
+                            Patron p = new Patron(Callback, Chairs, QueueToBar);
+
+                            p.Name = GuestList[randomNumber];
+
+                            GuestList.RemoveAt(randomNumber); //ta bort gäst från gästlistan
+
+                            numberOfGuestsOnList = GuestList.Count(); // antal namn kvar på listan
+
+                            AddToGuestInBar?.Invoke(p);
+
+                            Callback($"[{elapsedtime}] {p.PatronEnters()}");
+                            PatronArrived?.Invoke(p);
+
+                        }
+
+                    
 
                 });
 
-        }       
+        }    
+        public void BouncerGoesHome()
+        {
+            Callback("Bouncer goes home");
+        }
 
     }
 }

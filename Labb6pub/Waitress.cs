@@ -54,8 +54,11 @@ namespace Labb6pub
                 glassesOnShelve.Add(dirtyGlasses.Pop());
               
                 
-            }
-            
+            }        
+        }
+        public void WaitressGoHome()
+        {
+            WaitressPrint("Waitress go home.");
         }
     }
 }

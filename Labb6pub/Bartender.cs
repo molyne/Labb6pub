@@ -70,6 +70,7 @@ namespace Labb6pub
 
         public void GetGlass(Patron patron)
         {
+           
             if (glassesOnShelve.Count > 0)
             {
                 Thread.Sleep(takeGlassTime); //tid att ta glaset
@@ -92,6 +93,10 @@ namespace Labb6pub
                 GotBeer?.Invoke(FirstInQueue.Name);
             });
             
+        }
+        public void BartenderGoesHome()
+        {
+            BartenderPrint("Bartender goes home");
         }
 
       

@@ -29,10 +29,13 @@ namespace Labb6pub
 
     {   
         private BlockingCollection<Patron> queueToBar;
+        private Queue<Patron> guestsInBar;
         private BlockingCollection<Glass> glassesFilledWithBeer;
         private BlockingCollection<Glass> glassesOnShelve;
 
         private BlockingCollection<Chair> chairs;
+
+        public event Action AllGuestsLeft;
 
         bool IsGlassAvailable = true;
         bool IsBarOpen = false;
@@ -53,6 +56,7 @@ namespace Labb6pub
             //en lista på vilken ordning gästerna kommer i
             //queueToBar = new ConcurrentQueue<Patron>();
             queueToBar = new BlockingCollection<Patron>(); // concurrentqueue är standardklass
+            guestsInBar = new Queue<Patron>();
             //stackGlasses = new Stack<Glass>();
             glassesFilledWithBeer = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
             glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
@@ -70,7 +74,7 @@ namespace Labb6pub
            
             Dispatcher.Invoke(() =>
             {
-                NumberOfGuestsLabel.Content = "Number of guests: " + GuestListBox.Items.Count.ToString();
+                NumberOfGuestsLabel.Content = "Number of guests: " + guestsInBar.Count();
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + glassesOnShelve.Count();
                 NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
             });
@@ -95,12 +99,25 @@ namespace Labb6pub
             }
         }
 
-        private void AddToQueueToBar(Patron patron) 
+        private void AddToQueueInBar(Patron patron) 
         {
             Thread.Sleep(walkToBarTime); // tid för gästen att komma till kön
             {
                 queueToBar.Add(patron);             
             }
+        }
+        private void AddToGuestsInBar(Patron patron)
+        {
+            guestsInBar.Enqueue(patron);
+        
+        }
+        private void RemoveGuestInBar()
+        {
+            if (guestsInBar != null)
+                guestsInBar.Dequeue();
+            if (guestsInBar.Count == 0)
+                AllGuestsLeft?.Invoke();
+
         }
 
 
@@ -119,10 +136,14 @@ namespace Labb6pub
 
             w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve);
 
-            b.PatronArrived += AddToQueueToBar;
+            b.PatronArrived += AddToQueueInBar;
             b.PatronArrived += bar.GetGlass;
+            b.AddToGuestInBar += AddToGuestsInBar;
             bar.GotBeer += p.PatronSearchForChair;
             p.PatronLeaved += w.AddEmptyGlasses;
+            p.PatronLeaved += RemoveGuestInBar;
+            AllGuestsLeft += w.WaitressGoHome;
+            AllGuestsLeft += bar.BartenderGoesHome;
             
 
             //prenumenera här på events
@@ -159,7 +180,7 @@ namespace Labb6pub
            
                 {
                     GuestListBox.Items.Insert(0, patronInformation);
-                    NumberOfGuestsLabel.Content = "Number of guests: ";
+                    NumberOfGuestsLabel.Content = "Number of guests: "+guestsInBar.Count();
                     NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
                     NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
                     NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
@@ -177,6 +198,7 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 BartenderListbox.Items.Insert(0, bartenderInformation);
+                NumberOfGuestsLabel.Content = "Number of guests: " + guestsInBar.Count();
                 NumberOfEmptyGlassesLabel.Content= "Number of glasses on the shelve: " + glassesOnShelve.Count();
                 NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
                 
@@ -191,6 +213,7 @@ namespace Labb6pub
                 WaitressListBox.Items.Insert(0, waitressInformation);
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
                 NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
+                NumberOfGuestsLabel.Content = "Number of guests: " + guestsInBar.Count();
 
             });
         }
