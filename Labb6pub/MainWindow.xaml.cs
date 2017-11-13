@@ -44,7 +44,7 @@ namespace Labb6pub
 
         DispatcherTimer timerTest;
 
-        int time = 30;
+        int time = 120;
 
         public event Action AllGuestsLeft;
 
@@ -125,8 +125,11 @@ namespace Labb6pub
         private void AddToGuestsInPub(Patron patron)
         {
             guestsInPub.Enqueue(patron);
+
+           
         
         }
+
         private void RemoveGuestInPub()
         {
             if (guestsInPub != null)
@@ -151,7 +154,7 @@ namespace Labb6pub
             if (time != 0)
                 time--;
             else
-                timer.Stop();
+                timerTest.Stop();
 
             if (time <= 10)
             {
@@ -164,6 +167,7 @@ namespace Labb6pub
             }
 
             ClosingTimeLabel.Content = FormatTime(time);
+
             
         }
 
@@ -195,12 +199,10 @@ namespace Labb6pub
             b.PatronArrived += AddToQueueInBar;
             b.PatronArrived += bar.GetGlass;
             b.PatronArrived += AddToGuestsInPub;
-            //b.AddToGuestInBar += AddToGuestsInBar;
             bar.GotBeer += p.PatronSearchForChair;
             p.PatronLeaved += w.AddEmptyGlasses;
             p.PatronLeaved += RemoveGuestInPub;
-            AllGuestsLeft += w.WaitressGoHome;
-            AllGuestsLeft += bar.BartenderGoesHome;
+              AllGuestsLeft += bar.BartenderGoesHome;
             
 
             //prenumenera här på events
@@ -208,8 +210,9 @@ namespace Labb6pub
 
             Task bartender = Task.Run(() =>
             {
-                bar.WaitsForPatron();     
-               
+              
+                    bar.WaitsForPatron();
+                
             });
 
             Task bouncer = Task.Run(() =>
@@ -217,13 +220,25 @@ namespace Labb6pub
                 b.Work(chairs,queueToBar,timer);
 
             });
-          
-           
+
+            
             Task waitress = Task.Run(() =>
-            {   while (timer.Elapsed < TimeSpan.FromSeconds(120)) // tills alla gästerna gått hem?
+            {
+                
+
+                while (timerTest.IsEnabled || w.dirtyGlasses.Count > 0)
                 {
+                  
                     w.PickUpEmptyGlasses();
-                }//gör en task åt waitress.
+
+
+                    if (!timerTest.IsEnabled && w.dirtyGlasses.Count == 0)
+                        w.WaitressGoHome();
+
+                }
+
+               
+                    
             });
 
         }
@@ -249,9 +264,9 @@ namespace Labb6pub
            
                 {
                     GuestListBox.Items.Insert(0, $"[{GetElapsedTime()}] {patronInformation}");
-                    NumberOfGuestsLabel.Content = "Number of guests in the pub: "+guestsInPub.Count();
-                    NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
+                    
                     NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
+                    NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count;
                     NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
                     NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
                     NumberOfTakenChairs.Content = "Number of taken chairs: " + p.takenChairs.Count();

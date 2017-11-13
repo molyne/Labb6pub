@@ -17,6 +17,7 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesOnShelve;
         public Stack<Glass> dirtyGlasses = new Stack<Glass>();
 
+
         private int pickingGlassesTime = 10000;
         private int dishingGlassesTime = 15000;
 
@@ -41,6 +42,7 @@ namespace Labb6pub
                 WaitressPrint($"Picks up {dirtyGlasses.Count} glasses.");
                 DishEmptyGlasses();
             }
+
             else //todo gör så det skrivs ut en gång..eller det kanske ska göra det(skrivas ut flera)?
                 WaitressPrint("Found no glasses.");
         }
@@ -52,9 +54,10 @@ namespace Labb6pub
             for (int i = 0; i < dirtyGlasses.Count; i++)
             {   
                 glassesOnShelve.Add(dirtyGlasses.Pop());
-              
-                
-            }        
+            }
+
+            
+          
         }
         public void WaitressGoHome()
         {
