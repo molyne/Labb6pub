@@ -139,14 +139,23 @@ namespace Labb6pub
                
             }
         }
+        private static string FormatTime(int time)
+        {
+                if(time<=69&&time>=60)
+                    return $"[0{time / 60}:0{time % 60}]";
+                if (time <= 9) { 
+                    return $"[0{time / 60}:0{time % 60}]";}
+                else
+                    return $"[0{ time / 60}:{ time % 60}]";
+        }
         void timer_Tick(object sender, EventArgs e)
         {
-            time--;
-            //if(time<60)
-            if(time>=9)
-            HoursToCloseLabel.Content = string.Format($"Minutes to closing: [0{time / 60}:{time % 60}]");
+            if (time != 0)
+                time--;
             else
-                HoursToCloseLabel.Content = string.Format($"Minutes to closing: [0{time / 60}:0{time % 60}]");
+                timer.Stop();
+
+            HoursToCloseLabel.Content = "Seconds to closing: "+FormatTime(time);
         }
 
 
