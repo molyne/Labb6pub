@@ -141,10 +141,8 @@ namespace Labb6pub
         }
         private static string FormatTime(int time)
         {
-                if(time<=69&&time>=60)
+                if(time%60<10)
                     return $"[0{time / 60}:0{time % 60}]";
-                if (time <= 9) { 
-                    return $"[0{time / 60}:0{time % 60}]";}
                 else
                     return $"[0{ time / 60}:{ time % 60}]";
         }
