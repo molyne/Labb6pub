@@ -27,6 +27,6 @@
         <Label x:Name="NumberOfFilledGlassesLabel" Content="Number of filled glasses:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="236,290,0,0"/>
         <Label x:Name="NumberofDirtyglassesLabel" Content="Number of dirty glasses:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="236,333,0,0"/>
         <Label x:Name="NumberOfTakenChairs" Content="Number of taken chairs:" HorizontalAlignment="Left" Margin="250,376,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="ClosingTimeLabel" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="113,299,0,0" RenderTransformOrigin="-0.1,0.269"/>
+        <Label x:Name="ClosingTimeLabel" Content="[00:00]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="108,299,0,0" RenderTransformOrigin="-0.1,0.269" Width="48"/>
     </Grid>
 </Window>
