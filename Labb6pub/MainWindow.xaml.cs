@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Labb6pub
 {
@@ -41,7 +42,9 @@ namespace Labb6pub
         Stopwatch timer = new Stopwatch();
         string elapsedtime;
 
+        DispatcherTimer timerTest;
 
+        int time = 120;
 
         public event Action AllGuestsLeft;
 
@@ -136,10 +139,26 @@ namespace Labb6pub
                
             }
         }
+        void timer_Tick(object sender, EventArgs e)
+        {
+            time--;
+            //if(time<60)
+            if(time>=9)
+            HoursToCloseLabel.Content = string.Format($"Minutes to closing: [0{time / 60}:{time % 60}]");
+            else
+                HoursToCloseLabel.Content = string.Format($"Minutes to closing: [0{time / 60}:0{time % 60}]");
+        }
 
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
+            timerTest = new DispatcherTimer();
+
+            timerTest.Interval = TimeSpan.FromSeconds(1);
+            timerTest.Tick += timer_Tick;
+            timerTest.Start();
+
+            timerTest.Start();
             timer.Start();
 
             OpenOrCloseBarButton.IsEnabled = false;
@@ -171,8 +190,7 @@ namespace Labb6pub
 
             Task bartender = Task.Run(() =>
             {
-                bar.WaitsForPatron();
-                   
+                bar.WaitsForPatron();     
                
             });
 
@@ -233,7 +251,7 @@ namespace Labb6pub
                 BartenderListbox.Items.Insert(0, $"[{GetElapsedTime()}] {bartenderInformation}");
                 NumberOfEmptyGlassesLabel.Content= "Number of glasses on the shelve: " + glassesOnShelve.Count();
                 NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
-                HoursToCloseLabel.Content = "Seconds to closing: " + (120 - timer.Elapsed.Seconds);
+           
                 
 
             });
