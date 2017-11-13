@@ -44,7 +44,7 @@ namespace Labb6pub
 
         DispatcherTimer timerTest;
 
-        int time = 120;
+        int time = 30;
 
         public event Action AllGuestsLeft;
 
@@ -153,7 +153,18 @@ namespace Labb6pub
             else
                 timer.Stop();
 
-            HoursToCloseLabel.Content = "Seconds to closing: "+FormatTime(time);
+            if (time <= 10)
+            {
+                if (time %2==0)
+                {
+                    ClosingTimeLabel.Foreground = Brushes.Red;
+                }
+                else
+                    ClosingTimeLabel.Foreground = Brushes.White;
+            }
+
+            ClosingTimeLabel.Content = FormatTime(time);
+            
         }
 
 
