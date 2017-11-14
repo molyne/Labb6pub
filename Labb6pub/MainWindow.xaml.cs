@@ -45,7 +45,7 @@ namespace Labb6pub
         DispatcherTimer timerToClosing;
         DispatcherTimer upDateLabelEverySecond;
 
-        int timeToClosing = 10;
+        int timeToClosing = 120;
         int upDateLabelTime = 0;
         int speed = 1;
 
@@ -75,7 +75,7 @@ namespace Labb6pub
             glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
 
             chairs = new BlockingCollection<Chair>();
-            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve, speed);
+            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve);
 
         }
 
@@ -183,12 +183,14 @@ namespace Labb6pub
             printTime.Start();
 
             OpenOrCloseBarButton.IsEnabled = false;
+            FastForwardButton.IsEnabled = false;
+            InfoTextLabel.Content = string.Empty;
 
             SetStartValues();
 
             b = new Bouncer(AddToGuestListBox);
 
-            p = new Patron(AddToGuestListBox,chairs,speed);
+            p = new Patron(AddToGuestListBox,chairs);
 
             w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve, speed);
 
@@ -210,7 +212,7 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs,printTime,speed);
+                b.Work(chairs,printTime);
 
             });
 
@@ -283,7 +285,10 @@ namespace Labb6pub
 
         private void FastForwardButton_Click(object sender, RoutedEventArgs e)
         {
-            speed = 20;
+            speed = 2;
+            w.changespeed(speed);
+            FastForwardButton.IsEnabled = false;
+            InfoTextLabel.Content = "Speed x2 is now choosen";
             // skicka in farten som inparameter
         }
     }

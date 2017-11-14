@@ -17,7 +17,7 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesOnShelve;
         public Stack<Glass> dirtyGlasses = new Stack<Glass>();
 
-        private int speed = 1;
+       private  int speed;
         private int pickingGlassesTime = 10000;
         private int dishingGlassesTime = 15000;
 
@@ -27,11 +27,13 @@ namespace Labb6pub
             WaitressPrint = CallBack;
             this.filledWithBeerGlasses = FilledWithBeerGlasses;
             this.glassesOnShelve = GlassesOnShelve;
-            this.speed = Speed;
+            this.speed = Speed;       
 
-
-
-    }
+        }
+        public void changespeed(int speed)
+        {
+            this.speed = speed;
+        }
 
 
         
@@ -63,8 +65,7 @@ namespace Labb6pub
             {   
                 glassesOnShelve.Add(dirtyGlasses.Pop());
             }
-
-            
+          
           
         }
         public void WaitressGoHome()
