@@ -17,16 +17,23 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesOnShelve;
         public Stack<Glass> dirtyGlasses = new Stack<Glass>();
 
-
-        private int pickingGlassesTime = 10000;
+        int speed = 1;
+        private int pickingGlassesTime = 10000 / Speed;
         private int dishingGlassesTime = 15000;
 
-        public Waitress(Action<string> CallBack, BlockingCollection<Glass> FilledWithBeerGlasses, BlockingCollection<Glass> GlassesOnShelve)
+
+        public Waitress(Action<string> CallBack, BlockingCollection<Glass> FilledWithBeerGlasses, BlockingCollection<Glass> GlassesOnShelve, int Speed)
         {
             WaitressPrint = CallBack;
             this.filledWithBeerGlasses = FilledWithBeerGlasses;
             this.glassesOnShelve = GlassesOnShelve;
-        }
+            this.speed = Speed;
+            
+
+    }
+
+
+        
 
         public void AddEmptyGlasses()
         {

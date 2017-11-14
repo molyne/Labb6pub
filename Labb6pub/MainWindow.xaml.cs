@@ -47,6 +47,7 @@ namespace Labb6pub
 
         int timeToClosing = 120;
         int upDateLabelTime = 0;
+        int speed = 1;
 
         public event Action AllGuestsLeft;
 
@@ -189,7 +190,7 @@ namespace Labb6pub
 
             p = new Patron(AddToGuestListBox,chairs);
 
-            w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve);
+            w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve, speed);
 
             b.PatronArrived += AddToQueueInBar;
             b.PatronArrived += bar.GetGlass;
@@ -218,7 +219,7 @@ namespace Labb6pub
             {
                 while (timerToClosing.IsEnabled || w.dirtyGlasses.Count > 0)
                 {     
-                    w.PickUpEmptyGlasses();
+                    w.PickUpEmptyGlasses(speed);
 
                         if (!timerToClosing.IsEnabled && w.dirtyGlasses.Count == 0)
                             w.WaitressGoHome();
@@ -273,7 +274,18 @@ namespace Labb6pub
             {
                 WaitressListBox.Items.Insert(0, $"[{GetElapsedTime()}] {waitressInformation}");
             });
-        }   
+        }
+
+        private void FastForward(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FastForwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            speed = 2;
+            // skicka in farten som inparameter
+        }
     }
 }
 
