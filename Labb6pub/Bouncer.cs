@@ -15,6 +15,7 @@ namespace Labb6pub
     class Bouncer
     {
         private Action<string> Callback;
+        private bool barIsOpen=true;
         public event Action<Patron> PatronArrived;
         public event Action<Patron> AddToGuestInBar;
         Stopwatch stopwatch = new Stopwatch();
@@ -47,6 +48,11 @@ namespace Labb6pub
                 GuestList.Add("Magnus");
                 GuestList.Add("Elias");
                 GuestList.Add("Tobias");
+                GuestList.Add("Klas");
+                GuestList.Add("Silvia");
+                GuestList.Add("Gustav");
+                GuestList.Add("Victoria");
+
 
             };
 
@@ -62,7 +68,7 @@ namespace Labb6pub
 
             Task patron = Task.Run(() =>
                 {
-                    while (Timer.Elapsed < TimeSpan.FromSeconds(120) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
+                    while (barIsOpen)
                     {
 
                         int randomTime = r.Next(3000, 10000);
@@ -71,31 +77,33 @@ namespace Labb6pub
                         Thread.Sleep(randomTime);
 
                         //kontrollera om baren är öppen..bool. Gör ett event för att barem stänger
+                        if (barIsOpen)
+                        {
 
-                        numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
+                            numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
 
-                        int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
+                            int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
-                        Patron p = new Patron(Callback, Chairs,Speed);
+                            Patron p = new Patron(Callback, Chairs, Speed);
 
-                        p.Name = GuestList[randomNumber];
+                            p.Name = GuestList[randomNumber];
 
-                        GuestList.RemoveAt(randomNumber); //ta bort gäst från gästlistan
+                            AddToGuestInBar?.Invoke(p);
 
-
-
-                        AddToGuestInBar?.Invoke(p);
-                        
                             Callback(p.PatronEnters());
-                        Task.Run(() => {PatronArrived?.Invoke(p); });
-                            
-                        
+                            Task.Run(() => { PatronArrived?.Invoke(p); });
+
+                        }
                     }
 
                     Callback("Bouncer goes home");
 
                 });
 
+        }
+        public void IsBarClosed()
+        {
+            barIsOpen = false;
         }
 
     }

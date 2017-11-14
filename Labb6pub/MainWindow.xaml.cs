@@ -32,7 +32,9 @@ namespace Labb6pub
         // samma sak med number of guests in pub..
         // tiden måste uppdateras hela tiden?
         
-    {   
+    {
+        public event Action BarIsClosed;
+
         private BlockingCollection<Patron> queueToBar;
         private Queue<Patron> guestsInPub;
         private BlockingCollection<Glass> glassesFilledWithBeer;
@@ -52,6 +54,7 @@ namespace Labb6pub
         public event Action AllGuestsLeft;
 
         bool IsGlassAvailable = true;
+
         private int numberOfGlasses = 8;
         private int numberOfChairs = 9;
         int walkToBarTime = 1000;
@@ -144,13 +147,15 @@ namespace Labb6pub
         }
         void timer_Tick(object sender, EventArgs e)
         {
-          
+
 
             if (timeToClosing != 0)
                 timeToClosing--;
             else
+            {
                 timerToClosing.Stop();
-
+                BarIsClosed?.Invoke();
+            }
             if (timeToClosing <= 10)
             {
                     ClosingTimeLabel.Foreground = Brushes.Red;       
@@ -183,7 +188,6 @@ namespace Labb6pub
             printTime.Start();
 
             OpenOrCloseBarButton.IsEnabled = false;
-            FastForwardButton.IsEnabled = false;
             InfoTextLabel.Content = string.Empty;
 
             SetStartValues();
@@ -192,7 +196,7 @@ namespace Labb6pub
 
             p = new Patron(AddToGuestListBox,chairs,speed);
 
-            w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve, speed);
+            w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve);
 
             b.PatronArrived += AddToQueueInBar;
             b.PatronArrived += bar.GetGlass;
@@ -201,6 +205,8 @@ namespace Labb6pub
             p.PatronLeaved += w.AddEmptyGlasses;
             p.PatronLeaved += RemoveGuestInPub;
             AllGuestsLeft += bar.BartenderGoesHome;
+            BarIsClosed += b.IsBarClosed;
+         
 
 
             Task bartender = Task.Run(() =>
@@ -286,7 +292,7 @@ namespace Labb6pub
         private void FastForwardButton_Click(object sender, RoutedEventArgs e)
         {
             speed = 2;
-            w.changespeed(speed);
+            w.ChangeSpeed(speed);
             FastForwardButton.IsEnabled = false;
             InfoTextLabel.Content = "Speed x2 is now choosen";
             // skicka in farten som inparameter
