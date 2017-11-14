@@ -60,8 +60,11 @@ namespace Labb6pub
             Task patron = Task.Run(() =>
                 {          
                     while (Timer.Elapsed < TimeSpan.FromSeconds(120) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
-                    {                      
+                    {
+
                             int randomTime = r.Next(3000, 10000);
+
+
                             Thread.Sleep(randomTime);
 
                             numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
@@ -74,13 +77,14 @@ namespace Labb6pub
 
                             GuestList.RemoveAt(randomNumber); //ta bort gäst från gästlistan
 
-                            
+
 
                             AddToGuestInBar?.Invoke(p);
 
+                        if (Timer.Elapsed < TimeSpan.FromSeconds(119)){
                             Callback(p.PatronEnters());
                             PatronArrived?.Invoke(p);
-
+                        }
                     }
 
             Callback("Bouncer goes home");
