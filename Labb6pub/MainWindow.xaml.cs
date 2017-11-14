@@ -183,6 +183,8 @@ namespace Labb6pub
             printTime.Start();
 
             OpenOrCloseBarButton.IsEnabled = false;
+            FastForwardButton.IsEnabled = false;
+            InfoTextLabel.Content = string.Empty;
 
             SetStartValues();
 
@@ -219,7 +221,7 @@ namespace Labb6pub
             {
                 while (timerToClosing.IsEnabled || w.dirtyGlasses.Count > 0)
                 {     
-                    w.PickUpEmptyGlasses(speed);
+                    w.PickUpEmptyGlasses();
 
                         if (!timerToClosing.IsEnabled && w.dirtyGlasses.Count == 0)
                             w.WaitressGoHome();
@@ -284,6 +286,8 @@ namespace Labb6pub
         private void FastForwardButton_Click(object sender, RoutedEventArgs e)
         {
             speed = 2;
+            FastForwardButton.IsEnabled = false;
+            InfoTextLabel.Content = "Speed x2 is now choosen";
             // skicka in farten som inparameter
         }
     }
