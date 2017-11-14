@@ -20,7 +20,7 @@ namespace Labb6pub
         public event Action<Patron> AddToGuestInBar;
         Stopwatch stopwatch = new Stopwatch();
 
-        int speed;
+        int speed = 1;
 
         List<string> GuestList;
         int numberOfGuestsOnList;
@@ -57,11 +57,17 @@ namespace Labb6pub
             };
 
         }
+
+        public void ChangeSpeed(int Speed)
+        {
+            this.speed = Speed;
+        }
+
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
-        public void Work(BlockingCollection<Chair> Chairs, Stopwatch Timer, int Speed)
+        public void Work(BlockingCollection<Chair> Chairs, Stopwatch Timer)
         {
             this.stopwatch = Timer;
-            this.speed = Speed;
+
 
             Random r = new Random();
             Stopwatch s = new Stopwatch();
@@ -74,9 +80,9 @@ namespace Labb6pub
                         int randomTime = r.Next(3000, 10000);
 
 
-                        Thread.Sleep(randomTime);
+                        Thread.Sleep(randomTime/speed);
 
-                        //kontrollera om baren är öppen..bool. Gör ett event för att barem stänger
+
                         if (barIsOpen)
                         {
 
@@ -84,7 +90,7 @@ namespace Labb6pub
 
                             int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
-                            Patron p = new Patron(Callback, Chairs, Speed);
+                            Patron p = new Patron(Callback, Chairs);
 
                             p.Name = GuestList[randomNumber];
 

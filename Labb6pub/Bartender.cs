@@ -36,8 +36,12 @@ namespace Labb6pub
             BartenderPrint = Callback;
         }
 
+        public void ChangeSpeed(int Speed)
+        {
+            this.speed = Speed;
+        }
 
-       
+
 
         public void WaitsForPatron()
         {

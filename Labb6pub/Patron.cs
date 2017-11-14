@@ -25,13 +25,18 @@ namespace Labb6pub
 
         public string Name{ get; set; }
 
-        public Patron(Action<string> PatronPrint, BlockingCollection<Chair> Chairs, int Speed)
+        public Patron(Action<string> PatronPrint, BlockingCollection<Chair> Chairs)
         {
             this.chairs = Chairs;
             this.PatronPrint = PatronPrint;
-            this.speed = Speed;
+
 
          
+        }
+
+        public void ChangeSpeed(int Speed)
+        {
+            this.speed = Speed;
         }
 
         public string PatronEnters()

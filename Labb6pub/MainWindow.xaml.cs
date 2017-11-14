@@ -194,7 +194,7 @@ namespace Labb6pub
 
             b = new Bouncer(AddToGuestListBox);
 
-            p = new Patron(AddToGuestListBox,chairs,speed);
+            p = new Patron(AddToGuestListBox,chairs);
 
             w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve);
 
@@ -218,7 +218,7 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs,printTime,speed);
+                b.Work(chairs,printTime);
 
             });
 
@@ -293,6 +293,9 @@ namespace Labb6pub
         {
             speed = 2;
             w.ChangeSpeed(speed);
+            b.ChangeSpeed(speed);
+            p.ChangeSpeed(speed);
+            bar.ChangeSpeed(speed);
             FastForwardButton.IsEnabled = false;
             InfoTextLabel.Content = "Speed x2 is now choosen";
             // skicka in farten som inparameter
