@@ -75,7 +75,7 @@ namespace Labb6pub
             glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
 
             chairs = new BlockingCollection<Chair>();
-            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve);
+            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve,speed);
 
         }
 
@@ -190,7 +190,7 @@ namespace Labb6pub
 
             b = new Bouncer(AddToGuestListBox);
 
-            p = new Patron(AddToGuestListBox,chairs);
+            p = new Patron(AddToGuestListBox,chairs,speed);
 
             w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve, speed);
 
@@ -212,7 +212,7 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs,printTime);
+                b.Work(chairs,printTime,speed);
 
             });
 
