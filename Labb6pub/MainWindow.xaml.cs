@@ -45,7 +45,7 @@ namespace Labb6pub
         DispatcherTimer timerToClosing;
         DispatcherTimer upDateLabelEverySecond;
 
-        int timeToClosing = 120;
+        int timeToClosing = 10;
         int upDateLabelTime = 0;
         int speed = 1;
 
@@ -75,7 +75,7 @@ namespace Labb6pub
             glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
 
             chairs = new BlockingCollection<Chair>();
-            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve);
+            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve, speed);
 
         }
 
@@ -188,7 +188,7 @@ namespace Labb6pub
 
             b = new Bouncer(AddToGuestListBox);
 
-            p = new Patron(AddToGuestListBox,chairs);
+            p = new Patron(AddToGuestListBox,chairs,speed);
 
             w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve, speed);
 
@@ -210,7 +210,7 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs,printTime);
+                b.Work(chairs,printTime,speed);
 
             });
 
@@ -219,7 +219,7 @@ namespace Labb6pub
             {
                 while (timerToClosing.IsEnabled || w.dirtyGlasses.Count > 0)
                 {     
-                    w.PickUpEmptyGlasses(speed);
+                    w.PickUpEmptyGlasses();
 
                         if (!timerToClosing.IsEnabled && w.dirtyGlasses.Count == 0)
                             w.WaitressGoHome();
@@ -283,7 +283,7 @@ namespace Labb6pub
 
         private void FastForwardButton_Click(object sender, RoutedEventArgs e)
         {
-            speed = 2;
+            speed = 20;
             // skicka in farten som inparameter
         }
     }

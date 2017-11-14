@@ -18,6 +18,7 @@ namespace Labb6pub
         public event Action<Patron> PatronArrived;
         public event Action<Patron> AddToGuestInBar;
         Stopwatch stopwatch = new Stopwatch();
+        int speed = 1;
 
         List<string> GuestList;
         int numberOfGuestsOnList;
@@ -25,6 +26,8 @@ namespace Labb6pub
         public Bouncer(Action<string> CallBack)
         {
             this.Callback = CallBack;
+
+
 
             GuestList = new List<string>();
             {
@@ -50,48 +53,53 @@ namespace Labb6pub
 
         }
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
-        public void Work(BlockingCollection<Chair> Chairs, Stopwatch Timer)
+        public void Work(BlockingCollection<Chair> Chairs, Stopwatch Timer, int Speed)
         {
             this.stopwatch = Timer;
-          
+            this.speed = Speed;
+
             Random r = new Random();
             Stopwatch s = new Stopwatch();
-        
+
             Task patron = Task.Run(() =>
-                {          
-                    while (Timer.Elapsed < TimeSpan.FromSeconds(120) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
-                    {
+            {
+                while (Timer.Elapsed < TimeSpan.FromSeconds(10) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
+                {
 
-                            int randomTime = r.Next(3000, 10000);
-
-
-                            Thread.Sleep(randomTime);
-
-                            numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
-
-                            int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
-
-                            Patron p = new Patron(Callback, Chairs);
-
-                            p.Name = GuestList[randomNumber];
-
-                            GuestList.RemoveAt(randomNumber); //ta bort gäst från gästlistan
+                    int randomTime = r.Next(3000, 10000);
 
 
+                    Thread.Sleep(randomTime);
+// kontrollera om baren är öppen
+                    numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
 
-                            AddToGuestInBar?.Invoke(p);
+                    int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
-                        if (Timer.Elapsed < TimeSpan.FromSeconds(119)){
-                            Callback(p.PatronEnters());
-                            PatronArrived?.Invoke(p);
-                        }
-                    }
+                    Patron p = new Patron(Callback, Chairs, Speed);
 
-            Callback("Bouncer goes home");
+                    p.Name = GuestList[randomNumber];
+
+                    GuestList.RemoveAt(randomNumber); //ta bort gäst från gästlistan
+
+
+
+                    AddToGuestInBar?.Invoke(p);
+
                     
-                });
+                    {
+                        Callback(p.PatronEnters());
+                        Task.Run(() =>
+                        {
+                            PatronArrived?.Invoke(p);
+                        });
+                    }
+                }
 
-        }         
+                Callback("Bouncer goes home");
+
+            });
+
+        }
 
     }
 }

@@ -19,15 +19,17 @@ namespace Labb6pub
 
         private int searchForChairTime = 1000;
         private int walkToTableTime = 4000;
+        private int speed = 1;
 
        
 
         public string Name{ get; set; }
 
-        public Patron(Action<string> PatronPrint, BlockingCollection<Chair> Chairs)
+        public Patron(Action<string> PatronPrint, BlockingCollection<Chair> Chairs, int Speed)
         {
             this.chairs = Chairs;
             this.PatronPrint = PatronPrint;
+            this.speed = Speed;
 
          
         }
@@ -37,11 +39,12 @@ namespace Labb6pub
             
             return Name + " enters and goes to the bar.";
         }
+
         public void PatronSearchForChair(string FirstInQueueName)
         {
            
 
-            Thread.Sleep(searchForChairTime);
+            Thread.Sleep(searchForChairTime/speed);
             PatronPrint(FirstInQueueName+" searches for a chair.");
           
            
@@ -50,7 +53,7 @@ namespace Labb6pub
         public void PatronSits(string FirstInQueueName2)
         {
 
-            Thread.Sleep(walkToTableTime);
+            Thread.Sleep(walkToTableTime/speed);
             takenChairs.Add(chairs.Take());
             PatronPrint(FirstInQueueName2+" sits and drinks his/hers beer.");
             
@@ -64,7 +67,7 @@ namespace Labb6pub
 
             int randomTime = r.Next(10000, 20000);
 
-            Thread.Sleep(randomTime);
+            Thread.Sleep(randomTime/speed);
 
             PatronPrint(FirstInQueueName3 + " finished the beer and leaves the bar.");
             chairs.Add(takenChairs.Take());

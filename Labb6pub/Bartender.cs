@@ -18,18 +18,21 @@ namespace Labb6pub
 
         private int takeGlassTime = 3000;
         private int pourBeerTime = 3000;
+        private int waitingTime = 0;
+        private int speed = 1;
 
         Patron FirstInQueue;
 
         bool isGlassAvailable;
 
 
-        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> GlassesFilledWithBeer, bool IsGlassAvailable, BlockingCollection<Glass> GlassesOnShelve)
+        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> GlassesFilledWithBeer, bool IsGlassAvailable, BlockingCollection<Glass> GlassesOnShelve, int Speed)
         {
             this.queueToBar = QueueToBar;
             this.glassesFilledWithBeer = GlassesFilledWithBeer;
             this.isGlassAvailable = IsGlassAvailable;
             this.glassesOnShelve = GlassesOnShelve;
+            this.speed = Speed;
             BartenderPrint = Callback;
         }
 
@@ -47,14 +50,14 @@ namespace Labb6pub
 
                 while (queueToBar.Count == 0)
                 {
-                    Thread.Sleep(10);
+                    Thread.Sleep(10); // davids 
                 }
 
             if (queueToBar != null)
             {
                 Task.Run(() =>
                 {
-                    Thread.Sleep(4000); //så att den skrivs ut efter alla fått sin öl
+                    Thread.Sleep(waitingTime); //så att den skrivs ut efter alla fått sin öl
                     if (glassesOnShelve.Count == 0)
                     {
                         BartenderPrint("Waiting for new glasses");
@@ -73,7 +76,7 @@ namespace Labb6pub
            
             if (glassesOnShelve.Count > 0)
             {
-                Thread.Sleep(takeGlassTime); //tid att ta glaset
+                Thread.Sleep(takeGlassTime/speed); //tid att ta glaset
                 glassesFilledWithBeer.Add(glassesOnShelve.Take());
                 BartenderPrint("Gets the glass from the shelve.");
                 PourBeer();
@@ -87,7 +90,7 @@ namespace Labb6pub
         {
             Task.Run(() => 
             {
-                Thread.Sleep(pourBeerTime);
+                Thread.Sleep(pourBeerTime/speed);
                 DequePatron();
                 BartenderPrint("Pour a glass of beer to " + FirstInQueue.Name + ".");
                 GotBeer?.Invoke(FirstInQueue.Name);

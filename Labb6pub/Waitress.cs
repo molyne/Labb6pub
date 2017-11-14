@@ -17,8 +17,8 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesOnShelve;
         public Stack<Glass> dirtyGlasses = new Stack<Glass>();
 
-        int speed = 1;
-        private int pickingGlassesTime = 10000 / Speed;
+        private int speed = 1;
+        private int pickingGlassesTime = 10000;
         private int dishingGlassesTime = 15000;
 
 
@@ -28,7 +28,8 @@ namespace Labb6pub
             this.filledWithBeerGlasses = FilledWithBeerGlasses;
             this.glassesOnShelve = GlassesOnShelve;
             this.speed = Speed;
-            
+
+
 
     }
 
@@ -42,7 +43,7 @@ namespace Labb6pub
 
         public void PickUpEmptyGlasses()
         {
-            Thread.Sleep(pickingGlassesTime);
+            Thread.Sleep(pickingGlassesTime/speed);
 
             if (dirtyGlasses.Count > 0 )
             {
@@ -55,7 +56,7 @@ namespace Labb6pub
         }
         public void DishEmptyGlasses(/*List<Glass> dirtyGlasses*/)
         {
-            Thread.Sleep(dishingGlassesTime);
+            Thread.Sleep(dishingGlassesTime/speed);
             WaitressPrint("Dishes the glasses.");
 
             for (int i = 0; i < dirtyGlasses.Count; i++)
