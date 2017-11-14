@@ -17,7 +17,6 @@ namespace Labb6pub
         private Action<string> Callback;
         private bool barIsOpen=true;
         public event Action<Patron> PatronArrived;
-        public event Action<Patron> AddToGuestInBar;
         Stopwatch stopwatch = new Stopwatch();
 
         int speed = 1;
@@ -91,10 +90,11 @@ namespace Labb6pub
                             int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
                             Patron p = new Patron(Callback, Chairs);
+                            
 
                             p.Name = GuestList[randomNumber];
 
-                            AddToGuestInBar?.Invoke(p);
+                            
 
                             Callback(p.PatronEnters());
                             Task.Run(() => { PatronArrived?.Invoke(p); });

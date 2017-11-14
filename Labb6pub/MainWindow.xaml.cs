@@ -23,15 +23,12 @@ namespace Labb6pub
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    //använd cancelltoken grej för att avsluta.
+
 
 
     public partial class MainWindow : Window
 
-        // number of taken chairs slutar alltid på 1 eftersom listbox måste uppdateras en gång till?
-        // samma sak med number of guests in pub..
-        // tiden måste uppdateras hela tiden?
-        
+ 
     {
         public event Action BarIsClosed;
 
@@ -54,6 +51,7 @@ namespace Labb6pub
         public event Action AllGuestsLeft;
 
         bool IsGlassAvailable = true;
+        bool barIsOpen = false;
 
         private int numberOfGlasses = 8;
         private int numberOfChairs = 9;
@@ -78,7 +76,7 @@ namespace Labb6pub
             glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
 
             chairs = new BlockingCollection<Chair>();
-            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve,speed);
+            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve);
 
         }
 
@@ -115,7 +113,8 @@ namespace Labb6pub
         {
             Thread.Sleep(walkToBarTime); // tid för gästen att komma till kön
             {
-                queueToBar.Add(patron);             
+                queueToBar.Add(patron);
+                
             }
         }
         private void AddToGuestsInPub(Patron patron)
@@ -130,14 +129,13 @@ namespace Labb6pub
         {
             if (guestsInPub != null)
                 guestsInPub.Dequeue();
-            if (guestsInPub.Count == 0)
+            if (guestsInPub.Count == 0 && !barIsOpen)
 
             {
                 AllGuestsLeft?.Invoke();
-                
-               
             }
         }
+
         private static string FormatTime(int time)
         {
                 if(time%60<10)
@@ -154,6 +152,7 @@ namespace Labb6pub
             else
             {
                 timerToClosing.Stop();
+                barIsOpen = false;
                 BarIsClosed?.Invoke();
             }
             if (timeToClosing <= 10)
@@ -189,6 +188,8 @@ namespace Labb6pub
 
             OpenOrCloseBarButton.IsEnabled = false;
             InfoTextLabel.Content = string.Empty;
+
+            barIsOpen = true;
 
             SetStartValues();
 

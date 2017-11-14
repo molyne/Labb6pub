@@ -26,13 +26,12 @@ namespace Labb6pub
         bool isGlassAvailable;
 
 
-        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> GlassesFilledWithBeer, bool IsGlassAvailable, BlockingCollection<Glass> GlassesOnShelve, int Speed)
+        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> GlassesFilledWithBeer, bool IsGlassAvailable, BlockingCollection<Glass> GlassesOnShelve)
         {
             this.queueToBar = QueueToBar;
             this.glassesFilledWithBeer = GlassesFilledWithBeer;
             this.isGlassAvailable = IsGlassAvailable;
             this.glassesOnShelve = GlassesOnShelve;
-            this.speed = Speed;
             BartenderPrint = Callback;
         }
 
@@ -78,7 +77,7 @@ namespace Labb6pub
         public void GetGlass(Patron patron)
         {
            
-            if (glassesOnShelve.Count > 0)
+            while (glassesOnShelve.Count <= 0) { Thread.Sleep(10); }
             {
                 Thread.Sleep(takeGlassTime/speed); //tid att ta glaset
                 glassesFilledWithBeer.Add(glassesOnShelve.Take());

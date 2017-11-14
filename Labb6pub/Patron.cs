@@ -24,6 +24,7 @@ namespace Labb6pub
        
 
         public string Name{ get; set; }
+        public string Name2 { get; set; }
 
         public Patron(Action<string> PatronPrint, BlockingCollection<Chair> Chairs)
         {
@@ -43,6 +44,12 @@ namespace Labb6pub
         {
             
             return Name + " enters and goes to the bar.";
+        }
+
+        public string PatronEnters2()
+        {
+
+            return Name2 + " enters and goes to the bar.";
         }
 
         public void PatronSearchForChair(string FirstInQueueName)
