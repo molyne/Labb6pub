@@ -16,7 +16,6 @@ namespace Labb6pub
 
         private BlockingCollection<Chair> chairs;
         public BlockingCollection<Chair> takenChairs = new BlockingCollection<Chair>(); //ändra till private sen
-        private BlockingCollection<Patron> queueToBar;
 
         private int searchForChairTime = 1000;
         private int walkToTableTime = 4000;
@@ -25,11 +24,10 @@ namespace Labb6pub
 
         public string Name{ get; set; }
 
-        public Patron(Action<string> PatronPrint, BlockingCollection<Chair> Chairs, BlockingCollection<Patron> QueueToBar)
+        public Patron(Action<string> PatronPrint, BlockingCollection<Chair> Chairs)
         {
             this.chairs = Chairs;
             this.PatronPrint = PatronPrint;
-            this.queueToBar = QueueToBar;
 
          
         }

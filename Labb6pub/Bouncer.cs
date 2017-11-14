@@ -50,21 +50,17 @@ namespace Labb6pub
 
         }
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
-        public void Work(BlockingCollection<Chair> Chairs,BlockingCollection<Patron> QueueToBar, Stopwatch Timer)
+        public void Work(BlockingCollection<Chair> Chairs, Stopwatch Timer)
         {
             this.stopwatch = Timer;
           
             Random r = new Random();
             Stopwatch s = new Stopwatch();
-
-           
+        
             Task patron = Task.Run(() =>
-                {
-               
+                {          
                     while (Timer.Elapsed < TimeSpan.FromSeconds(120) && GuestList.Count > 0)//tiden har tagit slut 2 min. 120 sekunder.
-                    {
-                      
-                        
+                    {                      
                             int randomTime = r.Next(3000, 10000);
                             Thread.Sleep(randomTime);
 
@@ -72,7 +68,7 @@ namespace Labb6pub
 
                             int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
 
-                            Patron p = new Patron(Callback, Chairs, QueueToBar);
+                            Patron p = new Patron(Callback, Chairs);
 
                             p.Name = GuestList[randomNumber];
 

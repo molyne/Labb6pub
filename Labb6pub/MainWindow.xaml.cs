@@ -49,7 +49,6 @@ namespace Labb6pub
         public event Action AllGuestsLeft;
 
         bool IsGlassAvailable = true;
-        bool IsBarOpen = false;
         private int numberOfGlasses = 8;
         private int numberOfChairs = 9;
         int walkToBarTime = 1000;
@@ -84,18 +83,9 @@ namespace Labb6pub
             FillShelveWithGlasses();
         
             CreateChairs();
-           
-            Dispatcher.Invoke(() =>
-            {
-                NumberOfGuestsLabel.Content = "Number of guests in the pub: " + guestsInPub.Count();
-                NumberOfEmptyGlassesLabel.Content = "Number of glasses left: " + glassesOnShelve.Count();
-                NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
-            });
             
         }
-
-        
-       
+     
 
         public void FillShelveWithGlasses()
         {
@@ -151,6 +141,8 @@ namespace Labb6pub
         }
         void timer_Tick(object sender, EventArgs e)
         {
+            UpdateLabelsValues();
+
             if (time != 0)
                 time--;
             else
@@ -185,14 +177,11 @@ namespace Labb6pub
 
             OpenOrCloseBarButton.IsEnabled = false;
 
-
-            IsBarOpen = true;
-
             SetStartValues();
 
             b = new Bouncer(AddToGuestListBox);
 
-            p = new Patron(AddToGuestListBox,chairs,queueToBar);
+            p = new Patron(AddToGuestListBox,chairs);
 
             w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve);
 
@@ -202,109 +191,83 @@ namespace Labb6pub
             bar.GotBeer += p.PatronSearchForChair;
             p.PatronLeaved += w.AddEmptyGlasses;
             p.PatronLeaved += RemoveGuestInPub;
-              AllGuestsLeft += bar.BartenderGoesHome;
-            
-
-            //prenumenera här på events
+            AllGuestsLeft += bar.BartenderGoesHome;
 
 
             Task bartender = Task.Run(() =>
             {
               
-                    bar.WaitsForPatron();
+                bar.WaitsForPatron();
                 
             });
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs,queueToBar,timer);
+                b.Work(chairs,timer);
 
             });
 
             
             Task waitress = Task.Run(() =>
             {
-                
-
                 while (timerTest.IsEnabled || w.dirtyGlasses.Count > 0)
-                {
-                  
+                {     
                     w.PickUpEmptyGlasses();
 
-
-                    if (!timerTest.IsEnabled && w.dirtyGlasses.Count == 0)
-                        w.WaitressGoHome();
-
+                        if (!timerTest.IsEnabled && w.dirtyGlasses.Count == 0)
+                            w.WaitressGoHome();
                 }
 
-               
-                    
             });
 
         }
 
         private string GetElapsedTime()
         {
-
             string elapsedminutes = timer.Elapsed.Minutes.ToString("00:");
             string elapsedseconds = timer.Elapsed.Seconds.ToString("00");
 
-
             elapsedtime= elapsedminutes + elapsedseconds;
 
-            return elapsedtime;
+            return elapsedtime;        
+        }
 
-           
+        private void UpdateLabelsValues()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                NumberOfGuestsLabel.Content = "Number of guests in the pub: " + guestsInPub.Count();
+                NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count();
+                NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
+                NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count();
+                NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
+                NumberOfTakenChairs.Content = "Number of taken chairs: " + p.takenChairs.Count();
+            });
         }
         private void AddToGuestListBox(string patronInformation)
         {
-
-
                 Dispatcher.Invoke(() =>
-           
                 {
                     GuestListBox.Items.Insert(0, $"[{GetElapsedTime()}] {patronInformation}");
-                    
-                    NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
-                    NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count;
-                    NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
-                    NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
-                    NumberOfTakenChairs.Content = "Number of taken chairs: " + p.takenChairs.Count();
 
                 });
-     
-
-
         }
 
         private void AddToBartenderListBox(string bartenderInformation)
         {
             Dispatcher.Invoke(() =>
             {
-                BartenderListbox.Items.Insert(0, $"[{GetElapsedTime()}] {bartenderInformation}");
-                NumberOfEmptyGlassesLabel.Content= "Number of glasses on the shelve: " + glassesOnShelve.Count();
-                NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count;
-           
-                
-
+                BartenderListbox.Items.Insert(0, $"[{GetElapsedTime()}] {bartenderInformation}");        
             });
         }
 
         private void AddToWaitressListBox(string waitressInformation)
         {
-            Dispatcher.Invoke(() =>
-            
+            Dispatcher.Invoke(() =>         
             {
                 WaitressListBox.Items.Insert(0, $"[{GetElapsedTime()}] {waitressInformation}");
-                NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
-                NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count;
-
             });
-        }
-
-        
-
-      
+        }   
     }
 }
 
