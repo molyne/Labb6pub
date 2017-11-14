@@ -39,12 +39,14 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesOnShelve;
 
         private BlockingCollection<Chair> chairs;
-        Stopwatch timer = new Stopwatch();
+        Stopwatch printTime = new Stopwatch();
         string elapsedtime;
 
-        DispatcherTimer timerTest;
+        DispatcherTimer timerToClosing;
+        DispatcherTimer upDateLabelEverySecond;
 
-        int time = 120;
+        int timeToClosing = 120;
+        int upDateLabelTime = 0;
 
         public event Action AllGuestsLeft;
 
@@ -141,39 +143,43 @@ namespace Labb6pub
         }
         void timer_Tick(object sender, EventArgs e)
         {
-            UpdateLabelsValues();
+          
 
-            if (time != 0)
-                time--;
+            if (timeToClosing != 0)
+                timeToClosing--;
             else
-                timerTest.Stop();
+                timerToClosing.Stop();
 
-            if (time <= 10)
+            if (timeToClosing <= 10)
             {
-                if (time %2==0)
-                {
-                    ClosingTimeLabel.Foreground = Brushes.Red;
-                }
-                else
-                    ClosingTimeLabel.Foreground = Brushes.White;
+                    ClosingTimeLabel.Foreground = Brushes.Red;       
             }
 
-            ClosingTimeLabel.Content = FormatTime(time);
+            ClosingTimeLabel.Content = FormatTime(timeToClosing);
 
             
+        }
+        void timerTvå_Tick (object sender, EventArgs e)
+        {
+            UpdateLabelsValues();
+            upDateLabelTime++;
         }
 
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
-            timerTest = new DispatcherTimer();
+            timerToClosing = new DispatcherTimer();
+            upDateLabelEverySecond = new DispatcherTimer();
 
-            timerTest.Interval = TimeSpan.FromSeconds(1);
-            timerTest.Tick += timer_Tick;
-            timerTest.Start();
+            upDateLabelEverySecond.Interval = TimeSpan.FromSeconds(1);
+            upDateLabelEverySecond.Tick += timerTvå_Tick;
+            upDateLabelEverySecond.Start();
 
-            timerTest.Start();
-            timer.Start();
+            timerToClosing.Interval = TimeSpan.FromSeconds(1);
+            timerToClosing.Tick += timer_Tick;
+            timerToClosing.Start();
+
+            printTime.Start();
 
             OpenOrCloseBarButton.IsEnabled = false;
 
@@ -203,18 +209,18 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs,timer);
+                b.Work(chairs,printTime);
 
             });
 
             
             Task waitress = Task.Run(() =>
             {
-                while (timerTest.IsEnabled || w.dirtyGlasses.Count > 0)
+                while (timerToClosing.IsEnabled || w.dirtyGlasses.Count > 0)
                 {     
                     w.PickUpEmptyGlasses();
 
-                        if (!timerTest.IsEnabled && w.dirtyGlasses.Count == 0)
+                        if (!timerToClosing.IsEnabled && w.dirtyGlasses.Count == 0)
                             w.WaitressGoHome();
                 }
 
@@ -224,8 +230,8 @@ namespace Labb6pub
 
         private string GetElapsedTime()
         {
-            string elapsedminutes = timer.Elapsed.Minutes.ToString("00:");
-            string elapsedseconds = timer.Elapsed.Seconds.ToString("00");
+            string elapsedminutes = printTime.Elapsed.Minutes.ToString("00:");
+            string elapsedseconds = printTime.Elapsed.Seconds.ToString("00");
 
             elapsedtime= elapsedminutes + elapsedseconds;
 
