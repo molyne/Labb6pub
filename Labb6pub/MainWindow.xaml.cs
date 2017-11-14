@@ -286,6 +286,7 @@ namespace Labb6pub
         private void FastForwardButton_Click(object sender, RoutedEventArgs e)
         {
             speed = 2;
+            w.changespeed(speed);
             FastForwardButton.IsEnabled = false;
             InfoTextLabel.Content = "Speed x2 is now choosen";
             // skicka in farten som inparameter

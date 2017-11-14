@@ -17,7 +17,7 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesOnShelve;
         public Stack<Glass> dirtyGlasses = new Stack<Glass>();
 
-        int speed;
+       private  int speed;
         private int pickingGlassesTime = 10000;
         private int dishingGlassesTime = 15000;
 
@@ -29,6 +29,10 @@ namespace Labb6pub
             this.glassesOnShelve = GlassesOnShelve;
             this.speed = Speed;       
 
+        }
+        public void changespeed(int speed)
+        {
+            this.speed = speed;
         }
 
 
