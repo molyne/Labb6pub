@@ -18,6 +18,7 @@ namespace Labb6pub
         private bool barIsOpen = true;
         public event Action<Patron> PatronArrived;
         public event Action PatronLeaved;
+        public event Action<int> ChangedSpeed;
 
         private BlockingCollection<Chair> chairs;
         private BlockingCollection<Chair> takenChairs;
@@ -31,8 +32,8 @@ namespace Labb6pub
         int numberOfGuestsOnList;
 
         private bool couplesNight = false;
-        private bool bouncerWorksslower = true;
-        private bool busLoad = true;
+        private bool bouncerWorksslower = false;
+        private bool busLoad = false;
 
 
         public Bouncer(Action<string> CallBack)
@@ -71,6 +72,7 @@ namespace Labb6pub
         public void ChangeSpeed(int Speed)
         {
             this.speed = Speed;
+            ChangedSpeed?.Invoke(speed);
         }
 
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
@@ -138,6 +140,7 @@ namespace Labb6pub
                         p = new Patron(Callback, chairs, takenChairs);
 
                         p.PatronLeaved += PatronLeft;
+                        ChangedSpeed += p.ChangeSpeed;
                         p.Name = GuestList[randomNumber];
 
 
