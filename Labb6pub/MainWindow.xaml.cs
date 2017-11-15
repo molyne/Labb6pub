@@ -50,7 +50,6 @@ namespace Labb6pub
 
         public event Action AllGuestsLeft;
 
-        bool IsGlassAvailable = true;
         bool barIsOpen = false;
 
         private int numberOfGlasses = 8;
@@ -67,16 +66,15 @@ namespace Labb6pub
         {
             InitializeComponent();
 
-            //en lista på vilken ordning gästerna kommer i
-            //queueToBar = new ConcurrentQueue<Patron>();
-            queueToBar = new BlockingCollection<Patron>(); // concurrentqueue är standardklass
+ 
+            queueToBar = new BlockingCollection<Patron>();
             guestsInPub = new Queue<Patron>();
-            //stackGlasses = new Stack<Glass>();
+
             glassesFilledWithBeer = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
             glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
 
             chairs = new BlockingCollection<Chair>();
-            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, IsGlassAvailable, glassesOnShelve);
+            bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, glassesOnShelve);
 
         }
 
@@ -117,7 +115,10 @@ namespace Labb6pub
                 
             }
         }
-        private void AddToGuestsInPub(Patron patron)
+
+        
+
+            private void AddToGuestsInPub(Patron patron)
         {
             guestsInPub.Enqueue(patron);
 
@@ -143,6 +144,23 @@ namespace Labb6pub
                 else
                     return $"[0{ time / 60}:{ time % 60}]";
         }
+
+        private void StartClocks()
+        {
+            timerToClosing = new DispatcherTimer();
+            upDateLabelEverySecond = new DispatcherTimer();
+
+            upDateLabelEverySecond.Interval = TimeSpan.FromSeconds(1);
+            upDateLabelEverySecond.Tick += timerTvå_Tick;
+            upDateLabelEverySecond.Start();
+
+            timerToClosing.Interval = TimeSpan.FromSeconds(1);
+            timerToClosing.Tick += timer_Tick;
+            timerToClosing.Start();
+
+            printTime.Start();
+        }
+
         void timer_Tick(object sender, EventArgs e)
         {
 
@@ -150,7 +168,7 @@ namespace Labb6pub
             if (timeToClosing != 0)
                 timeToClosing--;
             else
-            {
+            {   
                 timerToClosing.Stop();
                 barIsOpen = false;
                 BarIsClosed?.Invoke();
@@ -173,24 +191,13 @@ namespace Labb6pub
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
-            timerToClosing = new DispatcherTimer();
-            upDateLabelEverySecond = new DispatcherTimer();
-
-            upDateLabelEverySecond.Interval = TimeSpan.FromSeconds(1);
-            upDateLabelEverySecond.Tick += timerTvå_Tick;
-            upDateLabelEverySecond.Start();
-
-            timerToClosing.Interval = TimeSpan.FromSeconds(1);
-            timerToClosing.Tick += timer_Tick;
-            timerToClosing.Start();
-
-            printTime.Start();
+         
 
             OpenOrCloseBarButton.IsEnabled = false;
             InfoTextLabel.Content = string.Empty;
 
             barIsOpen = true;
-
+            StartClocks();
             SetStartValues();
 
             b = new Bouncer(AddToGuestListBox);
@@ -199,15 +206,16 @@ namespace Labb6pub
 
             w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve);
 
+           
+            b.PatronArrived += AddToGuestsInPub;
             b.PatronArrived += AddToQueueInBar;
             b.PatronArrived += bar.GetGlass;
-            b.PatronArrived += AddToGuestsInPub;
             bar.GotBeer += p.PatronSearchForChair;
             p.PatronLeaved += w.AddEmptyGlasses;
             p.PatronLeaved += RemoveGuestInPub;
             AllGuestsLeft += bar.BartenderGoesHome;
             BarIsClosed += b.IsBarClosed;
-         
+
 
 
             Task bartender = Task.Run(() =>
@@ -258,6 +266,7 @@ namespace Labb6pub
                 NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count();
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
                 NumberOfTakenChairs.Content = "Number of taken chairs: " + p.takenChairs.Count();
+         
             });
         }
         private void AddToGuestListBox(string patronInformation)
@@ -285,10 +294,7 @@ namespace Labb6pub
             });
         }
 
-        private void FastForward(object sender, RoutedEventArgs e)
-        {
-
-        }
+ 
 
         private void FastForwardButton_Click(object sender, RoutedEventArgs e)
         {

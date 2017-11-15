@@ -18,19 +18,18 @@ namespace Labb6pub
 
         private int takeGlassTime = 3000;
         private int pourBeerTime = 3000;
-        private int waitingTime = 0;
+        private int waitingTime = 3000;
         private int speed = 1;
 
         Patron FirstInQueue;
 
-        bool isGlassAvailable;
 
 
-        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> GlassesFilledWithBeer, bool IsGlassAvailable, BlockingCollection<Glass> GlassesOnShelve)
+
+        public Bartender(Action<string> Callback, BlockingCollection<Patron> QueueToBar, BlockingCollection<Glass> GlassesFilledWithBeer, BlockingCollection<Glass> GlassesOnShelve)
         {
             this.queueToBar = QueueToBar;
             this.glassesFilledWithBeer = GlassesFilledWithBeer;
-            this.isGlassAvailable = IsGlassAvailable;
             this.glassesOnShelve = GlassesOnShelve;
             BartenderPrint = Callback;
         }
@@ -69,7 +68,7 @@ namespace Labb6pub
             }
 
             FirstInQueue = queueToBar.Take();
-            //använd blocking collection     
+  
         
            
             }
@@ -85,9 +84,7 @@ namespace Labb6pub
                 PourBeer();
             }
 
-            //else {
-            //    BartenderPrint("Waiting for new glasses");
-            //}
+
         }
         public void PourBeer()
         {
@@ -95,8 +92,9 @@ namespace Labb6pub
             {
                 Thread.Sleep(pourBeerTime/speed);
                 DequePatron();
-                BartenderPrint("Pour a glass of beer to " + FirstInQueue.Name + ".");
                 GotBeer?.Invoke(FirstInQueue.Name);
+                BartenderPrint("Pours a glass of beer to " + FirstInQueue.Name + ".");
+                
             });
             
         }

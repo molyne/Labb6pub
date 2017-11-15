@@ -46,25 +46,22 @@ namespace Labb6pub
             return Name + " enters and goes to the bar.";
         }
 
-        public string PatronEnters2()
-        {
-
-            return Name2 + " enters and goes to the bar.";
-        }
 
         public void PatronSearchForChair(string FirstInQueueName)
         {
-           
+            Task.Run(() =>
+           {
 
-            Thread.Sleep(searchForChairTime/speed);
-            PatronPrint(FirstInQueueName+" searches for a chair.");
-          
-           
-            PatronSits(FirstInQueueName);                      
+               Thread.Sleep(searchForChairTime / speed);
+               PatronPrint(FirstInQueueName + " searches for a chair.");
+
+
+               PatronSits(FirstInQueueName);
+           });
         }
         public void PatronSits(string FirstInQueueName2)
         {
-
+            
             Thread.Sleep(walkToTableTime/speed);
             takenChairs.Add(chairs.Take());
             PatronPrint(FirstInQueueName2+" sits and drinks his/hers beer.");

@@ -23,6 +23,8 @@ namespace Labb6pub
 
         List<string> GuestList;
         int numberOfGuestsOnList;
+        bool couplesNight = true;
+       
 
         public Bouncer(Action<string> CallBack)
         {
@@ -76,34 +78,59 @@ namespace Labb6pub
                     while (barIsOpen)
                     {
 
+
                         int randomTime = r.Next(3000, 10000);
+                        numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
 
+                        
 
-                        Thread.Sleep(randomTime/speed);
+                        Thread.Sleep(randomTime / speed); 
 
 
                         if (barIsOpen)
                         {
 
-                            numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
 
-                            int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns kvar på listan
+                            int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finn i listan
 
                             Patron p = new Patron(Callback, Chairs);
-                            
+
 
                             p.Name = GuestList[randomNumber];
 
-                            
+
 
                             Callback(p.PatronEnters());
                             Task.Run(() => { PatronArrived?.Invoke(p); });
 
+                            if (couplesNight)
+                            {
+                                Task.Run(() =>
+                                {
+
+
+                                    int randomNumber2 = r.Next(0, numberOfGuestsOnList);
+
+                                    Patron onemorepatron = new Patron(Callback, Chairs);
+
+                                    onemorepatron.Name = GuestList[randomNumber2];
+
+                                    Callback(onemorepatron.PatronEnters());
+
+                                    Task.Run(() => { PatronArrived?.Invoke(onemorepatron); });
+
+
+                                });
+
+                                
+
+                                }
+                            }
                         }
-                    }
+                    
+                        Callback("Bouncer goes home");
 
-                    Callback("Bouncer goes home");
-
+                    
                 });
 
         }
