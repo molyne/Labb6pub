@@ -344,7 +344,7 @@ namespace Labb6pub
             BusLoadButton.IsEnabled = false;
         }
 
-        
+     
     }
 }
 
