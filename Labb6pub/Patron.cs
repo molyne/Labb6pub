@@ -15,7 +15,7 @@ namespace Labb6pub
         public event Action PatronLeaved;
 
         private BlockingCollection<Chair> chairs;
-        private BlockingCollection<Chair> takenChairs; //ändra till private sen
+        private BlockingCollection<Chair> takenChairs;
 
         private int searchForChairTime = 1000;
         private int walkToTableTime = 4000;
