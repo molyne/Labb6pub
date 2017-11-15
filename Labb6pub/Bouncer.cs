@@ -17,6 +17,11 @@ namespace Labb6pub
         private Action<string> Callback;
         private bool barIsOpen = true;
         public event Action<Patron> PatronArrived;
+        public event Action PatronLeaved;
+
+        private BlockingCollection<Chair> chairs;
+        private BlockingCollection<Chair> takenChairs;
+        Patron p;
 
 
         int speed = 1;
@@ -68,9 +73,10 @@ namespace Labb6pub
         }
 
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
-        public void Work(BlockingCollection<Chair> Chairs, Stopwatch Timer)
+        public void Work(BlockingCollection<Chair> Chairs, Stopwatch Timer, BlockingCollection<Chair> TakenChairs)
         {
-      
+            this.chairs = Chairs;
+            this.takenChairs = TakenChairs;
 
 
             Random r = new Random();
@@ -102,10 +108,10 @@ namespace Labb6pub
 
                             int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns i listan
 
-                            Patron p = new Patron(Callback, Chairs);
+                             p = new Patron(Callback, chairs, takenChairs);
 
-
-                            p.Name = GuestList[randomNumber];
+                        p.PatronLeaved += PatronLeft;
+                        p.Name = GuestList[randomNumber];
 
 
                             Callback(p.PatronEnters());
@@ -117,7 +123,7 @@ namespace Labb6pub
 
                                         int randomNumber2 = r.Next(0, numberOfGuestsOnList);
 
-                                        Patron onemorepatron = new Patron(Callback, Chairs);
+                                        Patron onemorepatron = new Patron(Callback, chairs, takenChairs);
 
                                         onemorepatron.Name = GuestList[randomNumber2];
 
@@ -135,7 +141,7 @@ namespace Labb6pub
 
                                 int randomNumber2 = r.Next(0, numberOfGuestsOnList);
 
-                                Patron onemorepatron = new Patron(Callback, Chairs);
+                                Patron onemorepatron = new Patron(Callback, Chairs, TakenChairs);
 
                                 onemorepatron.Name = GuestList[randomNumber2];
 
@@ -160,6 +166,14 @@ namespace Labb6pub
         public void IsBarClosed()
         {
             barIsOpen = false;
+        }
+        public void GotBeer(string name)
+        {
+            p.PatronSearchForChair(name);
+        }
+        public void PatronLeft()
+        {
+            PatronLeaved?.Invoke();
         }
 
     }

@@ -31,6 +31,7 @@ namespace Labb6pub
  
     {
         public event Action BarIsClosed;
+  
 
         private BlockingCollection<Patron> queueToBar;
         private Queue<Patron> guestsInPub;
@@ -38,6 +39,7 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesOnShelve;
 
         private BlockingCollection<Chair> chairs;
+        private BlockingCollection<Chair> takenChairs;
         Stopwatch printTime = new Stopwatch();
         string elapsedtime;
 
@@ -72,6 +74,7 @@ namespace Labb6pub
 
             glassesFilledWithBeer = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
             glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
+            takenChairs = new BlockingCollection<Chair>();
 
             chairs = new BlockingCollection<Chair>();
             bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, glassesOnShelve);
@@ -208,18 +211,17 @@ namespace Labb6pub
 
             b = new Bouncer(AddToGuestListBox);
 
-            p = new Patron(AddToGuestListBox,chairs);
 
             w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve);
 
            
             b.PatronArrived += AddToGuestsInPub;
             b.PatronArrived += AddToQueueInBar;
-            bar.GotBeer += p.PatronSearchForChair;
-            p.PatronLeaved += w.AddEmptyGlasses;
-            p.PatronLeaved += RemoveGuestInPub;
+            b.PatronLeaved += w.AddEmptyGlasses;
+            b.PatronLeaved += RemoveGuestInPub;
             BarIsClosed += b.IsBarClosed;
             BarIsClosed += bar.BarIsOpen;
+            bar.GotBeer += b.GotBeer;
 
 
 
@@ -238,7 +240,7 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs,printTime);
+                b.Work(chairs,printTime, takenChairs);
 
             });
 
@@ -276,7 +278,7 @@ namespace Labb6pub
                 NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
                 NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count();
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
-                NumberOfTakenChairs.Content = "Number of taken chairs: " + p.takenChairs.Count();
+                NumberOfTakenChairs.Content = "Number of taken chairs: " + takenChairs.Count();
          
             });
         }
