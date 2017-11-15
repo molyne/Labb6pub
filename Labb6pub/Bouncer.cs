@@ -15,16 +15,19 @@ namespace Labb6pub
     class Bouncer
     {
         private Action<string> Callback;
-        private bool barIsOpen=true;
+        private bool barIsOpen = true;
         public event Action<Patron> PatronArrived;
-        Stopwatch stopwatch = new Stopwatch();
+
 
         int speed = 1;
 
         List<string> GuestList;
         int numberOfGuestsOnList;
-        bool couplesNight = false;
-       
+
+        private const bool couplesNight = false;
+        private const bool bouncerWorksslower = false;
+        private bool busLoad = false;
+
 
         public Bouncer(Action<string> CallBack)
         {
@@ -67,31 +70,37 @@ namespace Labb6pub
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
         public void Work(BlockingCollection<Chair> Chairs, Stopwatch Timer)
         {
-            this.stopwatch = Timer;
+      
 
 
             Random r = new Random();
             Stopwatch s = new Stopwatch();
 
             Task patron = Task.Run(() =>
+            {
+                while (barIsOpen)
                 {
-                    while (barIsOpen)
-                    {
 
 
-                        int randomTime = r.Next(3000, 10000);
-                        numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
+                    int randomTime = r.Next(3000, 10000);
+                    numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
 
-                        
+                   
 
-                        Thread.Sleep(randomTime / speed); 
+
+                        if (bouncerWorksslower)
+                        {
+                            Thread.Sleep(randomTime * 2);
+                        }
+
+                        else { Thread.Sleep(randomTime / speed); }
 
 
                         if (barIsOpen)
                         {
+                       
 
-
-                            int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finn i listan
+                            int randomNumber = r.Next(0, numberOfGuestsOnList); // slumpa mellan namnen som finns i listan
 
                             Patron p = new Patron(Callback, Chairs);
 
@@ -99,39 +108,53 @@ namespace Labb6pub
                             p.Name = GuestList[randomNumber];
 
 
-
                             Callback(p.PatronEnters());
                             Task.Run(() => { PatronArrived?.Invoke(p); });
 
                             if (couplesNight)
                             {
-                                Task.Run(() =>
-                                {
-
-
-                                    int randomNumber2 = r.Next(0, numberOfGuestsOnList);
-
-                                    Patron onemorepatron = new Patron(Callback, Chairs);
-
-                                    onemorepatron.Name = GuestList[randomNumber2];
-
-                                    Callback(onemorepatron.PatronEnters());
-
-                                    Task.Run(() => { PatronArrived?.Invoke(onemorepatron); });
-
-
-                                });
-
                                 
 
-                                }
+                                        int randomNumber2 = r.Next(0, numberOfGuestsOnList);
+
+                                        Patron onemorepatron = new Patron(Callback, Chairs);
+
+                                        onemorepatron.Name = GuestList[randomNumber2];
+
+                                        Callback(onemorepatron.PatronEnters());
+
+                                        Task.Run(() => { PatronArrived?.Invoke(onemorepatron); });
+                            }
+
+                        if (busLoad)
+                        {
+
+                            Thread.Sleep(20000);
+                            for (int i = 0; i < 15; i++)
+                            {
+
+                                int randomNumber2 = r.Next(0, numberOfGuestsOnList);
+
+                                Patron onemorepatron = new Patron(Callback, Chairs);
+
+                                onemorepatron.Name = GuestList[randomNumber2];
+
+                                Callback(onemorepatron.PatronEnters());
+
+                                Task.Run(() => { PatronArrived?.Invoke(onemorepatron); });
+
+                                busLoad = false;
+
                             }
                         }
-                    
-                        Callback("Bouncer goes home");
+                        }
 
-                    
-                });
+                    }
+
+                Callback("Bouncer goes home");
+
+
+            });
 
         }
         public void IsBarClosed()

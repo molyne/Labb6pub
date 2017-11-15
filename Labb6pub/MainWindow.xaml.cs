@@ -52,7 +52,7 @@ namespace Labb6pub
 
         bool barIsOpen = false;
 
-        private int numberOfGlasses = 3;
+        private int numberOfGlasses = 8;
         private int numberOfChairs = 9;
         int walkToBarTime = 1000;
 
