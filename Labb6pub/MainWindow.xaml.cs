@@ -150,15 +150,20 @@ namespace Labb6pub
             timerToClosing = new DispatcherTimer();
             upDateLabelEverySecond = new DispatcherTimer();
 
-            upDateLabelEverySecond.Interval = TimeSpan.FromSeconds(1);
+            upDateLabelEverySecond.Interval = TimeSpan.FromMilliseconds(1);
             upDateLabelEverySecond.Tick += timerTvå_Tick;
             upDateLabelEverySecond.Start();
-
-            timerToClosing.Interval = TimeSpan.FromSeconds(1);
+            timerToClosing.Interval = TimeSpan.FromMilliseconds(1000);
             timerToClosing.Tick += timer_Tick;
             timerToClosing.Start();
 
             printTime.Start();
+        }
+
+        public void ChangeTimeSpeed()
+        {
+            timerToClosing.Interval = TimeSpan.FromMilliseconds(1000/speed);
+
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -191,7 +196,8 @@ namespace Labb6pub
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
-         
+
+            FastForwardButton.IsEnabled = true;
 
             OpenOrCloseBarButton.IsEnabled = false;
             InfoTextLabel.Content = string.Empty;
@@ -294,11 +300,15 @@ namespace Labb6pub
             });
         }
 
+
  
 
         private void FastForwardButton_Click(object sender, RoutedEventArgs e)
         {
             speed = 2;
+
+            ChangeTimeSpeed();
+
             w.ChangeSpeed(speed);
             b.ChangeSpeed(speed);
             p.ChangeSpeed(speed);

@@ -23,7 +23,7 @@ namespace Labb6pub
 
         List<string> GuestList;
         int numberOfGuestsOnList;
-        bool couplesNight = true;
+        bool couplesNight = false;
        
 
         public Bouncer(Action<string> CallBack)
