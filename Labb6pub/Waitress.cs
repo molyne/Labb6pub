@@ -37,9 +37,6 @@ namespace Labb6pub
             this.speed = Speed;
         }
 
-
-        
-
         public void AddEmptyGlasses()
         {
             dirtyGlasses.Push(filledWithBeerGlasses.Take());

@@ -74,7 +74,6 @@ namespace Labb6pub
             this.speed = Speed;
         }
 
-        //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
         public void Work(BlockingCollection<Chair> Chairs, BlockingCollection<Chair> TakenChairs, bool CouplesNight, bool BusLoad, bool BouncerWorksSlower)
         {
             this.chairs = Chairs;
