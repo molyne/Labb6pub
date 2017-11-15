@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="479" Width="813">
     <Grid Margin="0,7,0,-7">
+        <Rectangle Fill="#FFDFDDDD" HorizontalAlignment="Left" Height="114" Margin="36,299,0,0" Stroke="#FF414148" VerticalAlignment="Top" Width="202"/>
         <ListBox x:Name="WaitressListBox" HorizontalAlignment="Left" Height="100" Margin="319,139,0,0" VerticalAlignment="Top" Width="188"/>
         <ListBox x:Name="BartenderListbox" HorizontalAlignment="Left" Height="100" Margin="36,139,0,0" VerticalAlignment="Top" Width="254"/>
         <ListBox x:Name="GuestListBox" HorizontalAlignment="Left" Height="212" Margin="541,139,0,0" VerticalAlignment="Top" Width="237"/>
@@ -14,18 +15,19 @@
         <Label x:Name="WaitressLabel" Content="Waitress" HorizontalAlignment="Left" Margin="319,108,0,0" VerticalAlignment="Top"/>
         <Label x:Name="GuestsLabel" Content="Guests" HorizontalAlignment="Left" Margin="541,108,0,0" VerticalAlignment="Top"/>
         <Button x:Name="OpenOrCloseBarButton" Content="Open bar" HorizontalAlignment="Left" Margin="20,38,0,0" VerticalAlignment="Top" Width="98" Click="OpenOrCloseBarButton_Click" Height="23"/>
-        <Label x:Name="ConstantTimeToClosingLabel" Content="Time to closing:" HorizontalAlignment="Left" Margin="20,299,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="NumberOfGuestsLabel" Content="Number of guests in the pub:" HorizontalAlignment="Left" Margin="20,325,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="NumberOfEmptyGlassesLabel" Content="Number of glasses on the shelve:" HorizontalAlignment="Left" Margin="20,356,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="NumberOfChairsLabel" Content="Number of chairs:" HorizontalAlignment="Left" Margin="20,387,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="ConstantTimeToClosingLabel" Content="Time to closing:" HorizontalAlignment="Left" Margin="36,298,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="NumberOfGuestsLabel" Content="Number of guests in the pub:" HorizontalAlignment="Left" Margin="36,325,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="NumberOfEmptyGlassesLabel" Content="Number of glasses on the shelve:" HorizontalAlignment="Left" Margin="36,356,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="NumberOfChairsLabel" Content="Number of chairs:" HorizontalAlignment="Left" Margin="36,384,0,0" VerticalAlignment="Top"/>
         <Label x:Name="CountQueueLabel" Content="" HorizontalAlignment="Left" Margin="255,376,0,0" VerticalAlignment="Top"/>
         <Label x:Name="DirtyGlassesLabel" Content="" HorizontalAlignment="Left" Margin="319,316,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="ClosingTimeLabel" Content="[00:00]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="108,299,0,0" RenderTransformOrigin="-0.1,0.269" Width="48"/>
+        <Label x:Name="ClosingTimeLabel" Content="[00:00]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="121,299,0,0" RenderTransformOrigin="-0.1,0.269" Width="48"/>
         <Button x:Name="FastForwardButton" Content="Playback speed 2x" HorizontalAlignment="Left" VerticalAlignment="Top" Width="111" Margin="139,38,0,0" Click="FastForwardButton_Click" IsEnabled="False" Height="23"/>
         <Label x:Name="InfoTextLabel" Content="" HorizontalAlignment="Left" Margin="139,75,0,0" VerticalAlignment="Top" Foreground="Red"/>
         <Button x:Name="CouplesNightButton" Content="Couples night" ToolTip="Add two guests to the bar at the same time" HorizontalAlignment="Left" VerticalAlignment="Top" Width="87" Margin="274,38,0,0" Height="23" Click="CouplesNightButton_Click"/>
         <Button x:Name="BusLoadButton" Content="Add busload" ToolTip="A busload with 15 people enter after 20 seconds and bouncer slows down"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="84" Margin="531,38,0,0" Height="23" Click="BusLoadButton_Click"/>
         <Button x:Name="WaitressspeeduButton" Content="Speed up waitress" ToolTip="Speed up waitress 10 times" HorizontalAlignment="Left" VerticalAlignment="Top" Width="126" Margin="381,38,0,0" Height="23" Click="WaitressspeedupButton_Click"/>
-        <Label x:Name="InfoLabel" Content="Optional: Choose a modifier before you open the bar." HorizontalAlignment="Left" Margin="274,66,0,0" VerticalAlignment="Top" Width="416" Foreground="#FF8A8282"/>
+        <Label x:Name="InfoLabel" Content="Optional: Choose the modifier before you open the bar." HorizontalAlignment="Left" Margin="274,66,0,0" VerticalAlignment="Top" Width="416" Foreground="#FF8A8282"/>
+        
     </Grid>
 </Window>
