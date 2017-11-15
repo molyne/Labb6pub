@@ -60,7 +60,6 @@ namespace Labb6pub
 
         Bartender bar;
         Bouncer b;
-        Patron p;
         Waitress w;
         
   
@@ -318,7 +317,7 @@ namespace Labb6pub
 
             w.ChangeSpeed(speed);
             b.ChangeSpeed(speed);
-            p.ChangeSpeed(speed);
+            //p.ChangeSpeed(speed);
             bar.ChangeSpeed(speed);
             FastForwardButton.IsEnabled = false;
             InfoTextLabel.Content = "Speed x2 is now choosen";
