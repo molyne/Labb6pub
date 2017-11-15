@@ -19,7 +19,7 @@ namespace Labb6pub
 
         private int takeGlassTime = 3000;
         private int pourBeerTime = 3000;
-        private int waitingTime = 3000;
+
         private int speed = 1;
 
         Patron FirstInQueue;

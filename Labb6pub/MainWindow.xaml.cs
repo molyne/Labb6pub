@@ -239,7 +239,7 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs,printTime, takenChairs);
+                b.Work(chairs, takenChairs);
 
             });
 
