@@ -203,9 +203,8 @@ namespace Labb6pub
         {
             InfoLabel.Content = string.Empty;
             FastForwardButton.IsEnabled = true;
-            CouplesNightButton.IsEnabled = false;
-            WaitressspeeduButton.IsEnabled = false;
-            BusLoadButton.IsEnabled = false;
+
+            SetModifiersButtonsToFalse();
 
             OpenOrCloseBarButton.IsEnabled = false;
             InfoTextLabel.Content = string.Empty;
@@ -329,14 +328,14 @@ namespace Labb6pub
         {
             InfoLabel.Content = "You choosed Couples night!";
             couplesNight = true;
-            CouplesNightButton.IsEnabled = false;
+            SetModifiersButtonsToFalse();
         }
 
         private void WaitressspeedupButton_Click(object sender, RoutedEventArgs e)
         {
             InfoLabel.Content = "You choosed to speed up the waitress! Good choice (she's slow).";
             waitressWorksFaster = true;
-            WaitressspeeduButton.IsEnabled = false;
+            SetModifiersButtonsToFalse();
         }
 
         private void BusLoadButton_Click(object sender, RoutedEventArgs e)
@@ -344,9 +343,14 @@ namespace Labb6pub
             InfoLabel.Content = "You choosed the busload!";
             bouncerWorksSlower = true;
             busLoad = true;
-            BusLoadButton.IsEnabled = false;
+            SetModifiersButtonsToFalse();
         }
-
+        public void SetModifiersButtonsToFalse()
+        {
+            CouplesNightButton.IsEnabled = false;
+            BusLoadButton.IsEnabled = false;
+            WaitressspeeduButton.IsEnabled = false;
+        }
      
     }
 }
