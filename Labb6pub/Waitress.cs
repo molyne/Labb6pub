@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Labb6pub
 {
-    //tre stackar med glas, en på hyllan(emptyglasses), en för (patronhasglass), en för (dirtyglasses, som bara waitress behöver veta om).
+
 
     class Waitress
     {
@@ -62,10 +62,10 @@ namespace Labb6pub
                 DishEmptyGlasses();
             }
 
-            else //todo gör så det skrivs ut en gång..eller det kanske ska göra det(skrivas ut flera)?
+            else 
                 WaitressPrint("Found no glasses.");
         }
-        public void DishEmptyGlasses(/*List<Glass> dirtyGlasses*/)
+        public void DishEmptyGlasses()
         {   if (waitressWorksFaster)
             {
                 Thread.Sleep(dishingGlassesTime / speed/10);
