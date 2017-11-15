@@ -201,7 +201,7 @@ namespace Labb6pub
 
         private void OpenOrCloseBarButton_Click(object sender, RoutedEventArgs e)
         {
-
+            InfoLabel.Content = string.Empty;
             FastForwardButton.IsEnabled = true;
             CouplesNightButton.IsEnabled = false;
             WaitressspeeduButton.IsEnabled = false;
@@ -327,18 +327,21 @@ namespace Labb6pub
 
         private void CouplesNightButton_Click(object sender, RoutedEventArgs e)
         {
+            InfoLabel.Content = "You choosed Couples night!";
             couplesNight = true;
             CouplesNightButton.IsEnabled = false;
         }
 
         private void WaitressspeedupButton_Click(object sender, RoutedEventArgs e)
         {
+            InfoLabel.Content = "You choosed to speed up the waitress! Good choice (she's slow).";
             waitressWorksFaster = true;
             WaitressspeeduButton.IsEnabled = false;
         }
 
         private void BusLoadButton_Click(object sender, RoutedEventArgs e)
         {
+            InfoLabel.Content = "You choosed the busload!";
             bouncerWorksSlower = true;
             busLoad = true;
             BusLoadButton.IsEnabled = false;

@@ -26,5 +26,6 @@
         <Button x:Name="CouplesNightButton" Content="Couples night" ToolTip="Add two guests to the bar at the same time" HorizontalAlignment="Left" VerticalAlignment="Top" Width="87" Margin="274,38,0,0" Height="23" Click="CouplesNightButton_Click"/>
         <Button x:Name="BusLoadButton" Content="Add busload" ToolTip="A busload with 15 people enter after 20 seconds and bouncer slows down"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="84" Margin="531,38,0,0" Height="23" Click="BusLoadButton_Click"/>
         <Button x:Name="WaitressspeeduButton" Content="Speed up waitress" ToolTip="Speed up waitress 10 times" HorizontalAlignment="Left" VerticalAlignment="Top" Width="126" Margin="381,38,0,0" Height="23" Click="WaitressspeedupButton_Click"/>
+        <Label x:Name="InfoLabel" Content="Optional: Choose the modifier before you open the bar." HorizontalAlignment="Left" Margin="274,66,0,0" VerticalAlignment="Top" Width="416" Foreground="#FF8A8282"/>
     </Grid>
 </Window>
