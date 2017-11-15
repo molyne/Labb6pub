@@ -52,7 +52,7 @@ namespace Labb6pub
 
         bool barIsOpen = false;
 
-        private int numberOfGlasses = 8;
+        private int numberOfGlasses = 3;
         private int numberOfChairs = 9;
         int walkToBarTime = 1000;
 
@@ -215,12 +215,11 @@ namespace Labb6pub
            
             b.PatronArrived += AddToGuestsInPub;
             b.PatronArrived += AddToQueueInBar;
-            b.PatronArrived += bar.GetGlass;
             bar.GotBeer += p.PatronSearchForChair;
             p.PatronLeaved += w.AddEmptyGlasses;
             p.PatronLeaved += RemoveGuestInPub;
-            AllGuestsLeft += bar.BartenderGoesHome;
             BarIsClosed += b.IsBarClosed;
+            BarIsClosed += bar.BarIsOpen;
 
 
 
@@ -228,7 +227,13 @@ namespace Labb6pub
             {
               
                 bar.WaitsForPatron();
-                
+                while (timerToClosing.IsEnabled || queueToBar.Count > 0)
+                {
+                    bar.GetGlass();
+
+                }
+                while (guestsInPub.Count> 0) { Thread.Sleep(10); }
+                bar.BartenderGoesHome();
             });
 
             Task bouncer = Task.Run(() =>

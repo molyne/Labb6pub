@@ -15,6 +15,7 @@ namespace Labb6pub
         private BlockingCollection<Glass> glassesFilledWithBeer;
         private BlockingCollection<Patron> queueToBar;
         public event Action<string> GotBeer;
+        private bool isBarOpen = true;
 
         private int takeGlassTime = 3000;
         private int pourBeerTime = 3000;
@@ -43,59 +44,42 @@ namespace Labb6pub
 
         public void WaitsForPatron()
         {
-            BartenderPrint("Waiting for patrons.");             
+            BartenderPrint("Waiting for patrons.");
+        
 
         }
 
-            public void DequePatron()
-            {
+        public void DequePatron()
+        {
 
-                while (queueToBar.Count == 0)
-                {
-                    Thread.Sleep(10); // davids 
-                }
-
-            if (queueToBar != null)
-            {
-                Task.Run(() =>
-                {
-                    Thread.Sleep(waitingTime); //så att den skrivs ut efter alla fått sin öl
-                    if (glassesOnShelve.Count == 0)
-                    {
-                        BartenderPrint("Waiting for new glasses");
-                    }
-                });
-            }
 
             FirstInQueue = queueToBar.Take();
-  
-        
-           
-            }
+        }
 
-        public void GetGlass(Patron patron)
+        public void GetGlass()
         {
-           
+
             while (glassesOnShelve.Count <= 0) { Thread.Sleep(10); }
-            {
-                Thread.Sleep(takeGlassTime/speed); //tid att ta glaset
+
+            while (queueToBar.Count == 0) { Thread.Sleep(10); }
+           
+                Thread.Sleep(takeGlassTime / speed); //tid att ta glaset
                 glassesFilledWithBeer.Add(glassesOnShelve.Take());
                 BartenderPrint("Gets the glass from the shelve.");
                 PourBeer();
-            }
 
+       
 
         }
         public void PourBeer()
         {
-            Task.Run(() => 
-            {
+            
                 Thread.Sleep(pourBeerTime/speed);
                 DequePatron();
                 GotBeer?.Invoke(FirstInQueue.Name);
                 BartenderPrint("Pours a glass of beer to " + FirstInQueue.Name + ".");
                 
-            });
+            
             
         }
         public void BartenderGoesHome()
@@ -103,7 +87,10 @@ namespace Labb6pub
             BartenderPrint("Bartender goes home.");
         }
 
-      
+        public void BarIsOpen()
+        {
+            isBarOpen = false;
+        }
 
 
     }
