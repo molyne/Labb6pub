@@ -343,6 +343,8 @@ namespace Labb6pub
             busLoad = true;
             BusLoadButton.IsEnabled = false;
         }
+
+        
     }
 }
 

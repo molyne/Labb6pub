@@ -48,7 +48,7 @@ namespace Labb6pub
         public void PickUpEmptyGlasses()
         {   if (waitressWorksFaster)
             {
-                Thread.Sleep(pickingGlassesTime / speed / 2);
+                Thread.Sleep(pickingGlassesTime / speed / 10);
             }
             else
             {
@@ -68,7 +68,7 @@ namespace Labb6pub
         public void DishEmptyGlasses(/*List<Glass> dirtyGlasses*/)
         {   if (waitressWorksFaster)
             {
-                Thread.Sleep(dishingGlassesTime / speed/2);
+                Thread.Sleep(dishingGlassesTime / speed/10);
             }
             else
             {
