@@ -20,13 +20,15 @@ namespace Labb6pub
         private  int speed = 1;
         private int pickingGlassesTime = 10000;
         private int dishingGlassesTime = 15000;
+        private bool waitressWorksFaster;
 
 
-        public Waitress(Action<string> CallBack, BlockingCollection<Glass> FilledWithBeerGlasses, BlockingCollection<Glass> GlassesOnShelve)
+        public Waitress(Action<string> CallBack, BlockingCollection<Glass> FilledWithBeerGlasses, BlockingCollection<Glass> GlassesOnShelve, bool WaitressWorksFaster)
         {
             WaitressPrint = CallBack;
             this.filledWithBeerGlasses = FilledWithBeerGlasses;
             this.glassesOnShelve = GlassesOnShelve;
+            this.waitressWorksFaster = WaitressWorksFaster;
             
 
         }
@@ -44,10 +46,17 @@ namespace Labb6pub
         }
 
         public void PickUpEmptyGlasses()
-        {
-            Thread.Sleep(pickingGlassesTime/speed);
+        {   if (waitressWorksFaster)
+            {
+                Thread.Sleep(pickingGlassesTime / speed / 2);
+            }
+            else
+            {
+                Thread.Sleep(pickingGlassesTime / speed);
+            }
 
-            if (dirtyGlasses.Count > 0 )
+
+            if (dirtyGlasses.Count > 0)
             {
                 WaitressPrint($"Picks up {dirtyGlasses.Count} glasses.");
                 DishEmptyGlasses();
@@ -57,8 +66,14 @@ namespace Labb6pub
                 WaitressPrint("Found no glasses.");
         }
         public void DishEmptyGlasses(/*List<Glass> dirtyGlasses*/)
-        {
-            Thread.Sleep(dishingGlassesTime/speed);
+        {   if (waitressWorksFaster)
+            {
+                Thread.Sleep(dishingGlassesTime / speed/2);
+            }
+            else
+            {
+                Thread.Sleep(dishingGlassesTime / speed);
+            }
             WaitressPrint("Dishes the glasses.");
 
             for (int i = 0; i < dirtyGlasses.Count; i++)

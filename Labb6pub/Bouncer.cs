@@ -30,9 +30,10 @@ namespace Labb6pub
         List<string> GuestList;
         int numberOfGuestsOnList;
 
-        private bool couplesNight = false;
-        private bool bouncerWorksslower = true;
-        private bool busLoad = true;
+        private bool couplesNight;
+        private bool bouncerWorksSlower;
+        private bool busLoad;
+
 
 
         public Bouncer(Action<string> CallBack)
@@ -74,10 +75,14 @@ namespace Labb6pub
         }
 
         //gör en funktion som heter work. Vänta ett tag släpp in en gäst. Använd en loop.
-        public void Work(BlockingCollection<Chair> Chairs, BlockingCollection<Chair> TakenChairs)
+        public void Work(BlockingCollection<Chair> Chairs, BlockingCollection<Chair> TakenChairs, bool CouplesNight, bool BusLoad, bool BouncerWorksSlower)
         {
             this.chairs = Chairs;
             this.takenChairs = TakenChairs;
+            this.couplesNight = CouplesNight;
+            this.busLoad = BusLoad;
+            this.bouncerWorksSlower = BouncerWorksSlower;
+    
 
 
             r = new Random();
@@ -93,12 +98,12 @@ namespace Labb6pub
                     numberOfGuestsOnList = GuestList.Count(); // antal namn på gästlistan
 
 
-                    BusLoad();
+                    BusLoadEnters();
 
 
 
 
-                    if (bouncerWorksslower)
+                    if (bouncerWorksSlower)
                     {
                         Thread.Sleep(randomTime * 2);
                     }
@@ -122,7 +127,7 @@ namespace Labb6pub
                         Task.Run(() => { PatronArrived?.Invoke(p); });
 
 
-                        CouplesNight();
+                        IsitCouplesNight();
 
 
                     }
@@ -150,7 +155,7 @@ namespace Labb6pub
             PatronLeaved?.Invoke();
         }
 
-        public void BusLoad()
+        public void BusLoadEnters()
         {
             if (busLoad)
             {
@@ -179,7 +184,7 @@ namespace Labb6pub
                 busLoad = false;
             }
         }
-        public void CouplesNight()
+        public void IsitCouplesNight()
         {
             if (couplesNight)
             {

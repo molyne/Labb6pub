@@ -53,6 +53,10 @@ namespace Labb6pub
         public event Action AllGuestsLeft;
 
         bool barIsOpen = false;
+        bool couplesNight = false;
+        bool busLoad = false;
+        bool bouncerWorksSlower = false;
+        bool waitressWorksFaster = false;
 
         private int numberOfGlasses = 8;
         private int numberOfChairs = 9;
@@ -74,7 +78,6 @@ namespace Labb6pub
             glassesFilledWithBeer = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
             glassesOnShelve = new BlockingCollection<Glass>(new ConcurrentStack<Glass>());
             takenChairs = new BlockingCollection<Chair>();
-
             chairs = new BlockingCollection<Chair>();
             bar = new Bartender(AddToBartenderListBox, queueToBar, glassesFilledWithBeer, glassesOnShelve);
 
@@ -200,6 +203,9 @@ namespace Labb6pub
         {
 
             FastForwardButton.IsEnabled = true;
+            CouplesNightButton.IsEnabled = false;
+            WaitressspeeduButton.IsEnabled = false;
+            BusLoadButton.IsEnabled = false;
 
             OpenOrCloseBarButton.IsEnabled = false;
             InfoTextLabel.Content = string.Empty;
@@ -211,7 +217,7 @@ namespace Labb6pub
             b = new Bouncer(AddToGuestListBox);
 
 
-            w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve);
+            w = new Waitress(AddToWaitressListBox,glassesFilledWithBeer, glassesOnShelve, waitressWorksFaster);
 
            
             b.PatronArrived += AddToGuestsInPub;
@@ -239,7 +245,7 @@ namespace Labb6pub
 
             Task bouncer = Task.Run(() =>
             {
-                b.Work(chairs, takenChairs);
+                b.Work(chairs, takenChairs, couplesNight, busLoad, bouncerWorksSlower);
 
             });
 
@@ -273,11 +279,8 @@ namespace Labb6pub
             Dispatcher.Invoke(() =>
             {
                 NumberOfGuestsLabel.Content = "Number of guests in the pub: " + guestsInPub.Count();
-                NumberofDirtyglassesLabel.Content = "Number of dirty glasses: " + w.dirtyGlasses.Count();
                 NumberOfChairsLabel.Content = "Number of chairs: " + chairs.Count();
-                NumberOfFilledGlassesLabel.Content = "Number of filled glasses: " + glassesFilledWithBeer.Count();
                 NumberOfEmptyGlassesLabel.Content = "Number of glasses on the shelve: " + glassesOnShelve.Count();
-                NumberOfTakenChairs.Content = "Number of taken chairs: " + takenChairs.Count();
          
             });
         }
@@ -314,14 +317,31 @@ namespace Labb6pub
             speed = 2;
 
             ChangeTimeSpeed();
-
             w.ChangeSpeed(speed);
             b.ChangeSpeed(speed);
-            //p.ChangeSpeed(speed);
             bar.ChangeSpeed(speed);
             FastForwardButton.IsEnabled = false;
             InfoTextLabel.Content = "Speed x2 is now choosen";
             // skicka in farten som inparameter
+        }
+
+        private void CouplesNightButton_Click(object sender, RoutedEventArgs e)
+        {
+            couplesNight = true;
+            CouplesNightButton.IsEnabled = false;
+        }
+
+        private void WaitressspeedupButton_Click(object sender, RoutedEventArgs e)
+        {
+            waitressWorksFaster = true;
+            WaitressspeeduButton.IsEnabled = false;
+        }
+
+        private void BusLoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            bouncerWorksSlower = true;
+            busLoad = true;
+            BusLoadButton.IsEnabled = false;
         }
     }
 }
