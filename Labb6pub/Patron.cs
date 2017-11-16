@@ -20,13 +20,9 @@ namespace Labb6pub
         private int searchForChairTime = 1000;
         private int walkToTableTime = 4000;
         private int speed = 1;
-
-      
-
-       
+        private bool guestStaysLonger = false;
 
         public string Name{ get; set; }
-        public string Name2 { get; set; }
 
         public Patron(Action<string> PatronPrint, BlockingCollection<Chair> Chairs, BlockingCollection<Chair> TakenChairs )
         {
@@ -81,9 +77,14 @@ namespace Labb6pub
 
             Random r = new Random();
 
-            int randomTime = r.Next(10000, 20000);
+            int timeToDrinkBeer = r.Next(10000, 20000);
 
-            Thread.Sleep(randomTime/speed);
+            if (guestStaysLonger)
+            { Thread.Sleep(timeToDrinkBeer *2/ speed); }
+
+            else
+
+            { Thread.Sleep(timeToDrinkBeer/ speed); }
 
             PatronPrint(FirstInQueueName3 + " finished the beer and leaves the bar.");
             chairs.Add(takenChairs.Take());
