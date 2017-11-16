@@ -71,7 +71,7 @@ namespace Labb6pub
             {
                 Thread.Sleep(dishingGlassesTime / speed);
             }
-            WaitressPrint("Dishes the glasses.");
+            WaitressPrint("Washes the glasses.");
 
             for (int i = 0; i < dirtyGlasses.Count; i++)
             {   
