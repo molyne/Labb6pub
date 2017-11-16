@@ -46,21 +46,21 @@ namespace Labb6pub
         DispatcherTimer timerToClosing;
         DispatcherTimer upDateLabelEverySecond;
 
-        int timeToClosing = 120;
-        int upDateLabelTime = 0;
-        int speed = 1;
+        private int timeToClosing = 120;
+        private int upDateLabelTime = 0;
+        private int speed = 1;
 
         public event Action AllGuestsLeft;
 
-        bool barIsOpen = false;
-        bool couplesNight = false;
-        bool busLoad = false;
-        bool bouncerWorksSlower = false;
-        bool waitressWorksFaster = false;
+        private bool barIsOpen = false;
+        private bool couplesNight = false;
+        private bool busLoad = false;
+        private bool bouncerWorksSlower = false;
+        private bool waitressWorksFaster = false;
 
         private int numberOfGlasses = 8;
         private int numberOfChairs = 9;
-        int walkToBarTime = 1000;
+        private int walkToBarTime = 1000;
 
         Bartender bar;
         Bouncer b;

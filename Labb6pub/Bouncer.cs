@@ -24,7 +24,7 @@ namespace Labb6pub
         Patron p;
         Random r;
 
-        int speed = 1;
+        private int speed = 1;
         private int timeUntilBusLoadArrives = 20000;
 
         List<string> GuestList;
@@ -104,7 +104,7 @@ namespace Labb6pub
 
                     if (bouncerWorksSlower)
                     {
-                        Thread.Sleep(randomTime * 2);
+                        Thread.Sleep(randomTime * 2 / speed);
                     }
 
                     else { Thread.Sleep(randomTime / speed); }
@@ -160,7 +160,7 @@ namespace Labb6pub
             {
                 Task.Run(() =>
                 {
-                    Thread.Sleep(timeUntilBusLoadArrives);
+                    Thread.Sleep(timeUntilBusLoadArrives/speed);
                     for (int i = 0; i < 15; i++)
                     {
 
